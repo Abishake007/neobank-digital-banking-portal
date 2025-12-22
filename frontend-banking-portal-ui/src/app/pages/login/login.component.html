@@ -1,0 +1,51 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+  <div class="card shadow" style="width: 380px;">
+    
+    <div class="card-header bg-primary text-white text-center">
+      <h4>Banking Portal</h4>
+      <small>Secure Login</small>
+    </div>
+
+    <div class="card-body">
+
+      <div *ngIf="error" class="alert alert-danger">
+        {{ error }}
+      </div>
+
+      <form (ngSubmit)="login()">
+
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            [(ngModel)]="email"
+            name="email"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            [(ngModel)]="password"
+            name="password"
+            required
+          />
+        </div>
+
+        <button class="btn btn-primary w-100" type="submit">
+          Login
+        </button>
+
+      </form>
+    </div>
+
+    <div class="card-footer text-center text-muted">
+      © Banking Portal
+    </div>
+
+  </div>
+</div>

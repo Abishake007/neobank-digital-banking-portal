@@ -1,0 +1,124 @@
+<nav
+  *ngIf="showNavbar"
+  class="navbar navbar-expand-lg bg-white border-bottom shadow-sm">
+
+  <div class="container-fluid">
+
+    <!-- BRAND -->
+    <a class="navbar-brand fw-bold text-primary d-flex align-items-center">
+      <i class="bi bi-bank me-2"></i> Neo Bank
+    </a>
+
+    <!-- TOGGLER (MOBILE) -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#bankNavbar"
+      aria-controls="bankNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- COLLAPSIBLE CONTENT -->
+    <div class="collapse navbar-collapse" id="bankNavbar">
+
+      <!-- LEFT LINKS -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+        <li class="nav-item">
+          <a
+            routerLink="/dashboard"
+            routerLinkActive="active"
+            class="nav-link">
+            Dashboard
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a
+            routerLink="/transactions"
+            routerLinkActive="active"
+            class="nav-link">
+            Transactions
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a
+            routerLink="/monthly-report"
+            routerLinkActive="active"
+            class="nav-link">
+            Reports
+          </a>
+        </li>
+      </ul>
+
+      <!-- RIGHT SIDE -->
+      <ul class="navbar-nav mb-2 mb-lg-0">
+
+        <!-- 🌙 DARK MODE TOGGLE -->
+<li class="nav-item d-flex align-items-center me-2">
+  <button
+    class="btn btn-sm btn-outline-secondary"
+    (click)="themeService.toggleTheme()"
+    title="Toggle Dark Mode">
+    <i class="bi bi-moon-stars"></i>
+  </button>
+</li>
+
+
+        <!-- LOGIN (logged out) -->
+        <li class="nav-item" *ngIf="!authService.isLoggedIn()">
+          <button
+            class="btn btn-primary btn-sm"
+            (click)="login()">
+            Login
+          </button>
+        </li>
+
+        <!-- USER DROPDOWN (logged in) -->
+        <li
+          class="nav-item dropdown"
+          *ngIf="authService.isLoggedIn()">
+
+          <a
+            class="nav-link dropdown-toggle user-box-link"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+            {{ authService.getUserInitial() }}
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end">
+
+            <li class="dropdown-item-text fw-semibold">
+              {{ authService.getUserEmail() }}
+            </li>
+
+            <li class="dropdown-item-text text-muted small">
+              Role: {{ authService.isAdmin() ? 'ADMIN' : 'USER' }}
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+            <li>
+              <button
+                class="dropdown-item text-danger"
+                (click)="logout()">
+                <i class="bi bi-box-arrow-right me-2"></i>
+                Logout
+              </button>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

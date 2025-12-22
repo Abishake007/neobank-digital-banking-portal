@@ -1,0 +1,246 @@
+/* =======================
+   THEME VARIABLES
+======================= */
+:root {
+  --primary-blue: #004c8f;   /* HDFC navy */
+  --accent-red: #ed1c24;
+  --light-gray: #f5f7fa;
+}
+
+body {
+  background-color: var(--light-gray);
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.navbar {
+  background: #ffffff;
+}
+
+/* =======================
+   NAVBAR LINKS (LEFT MENU ONLY)
+======================= */
+
+/* Scope animation ONLY to main menu links */
+.navbar-nav > .nav-item > .nav-link {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.navbar-nav > .nav-item > .nav-link:hover {
+  color: var(--primary-blue);
+}
+
+.navbar-nav > .nav-item > .nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background-color: var(--primary-blue);
+  transition: width 0.25s ease;
+}
+
+.navbar-nav > .nav-item > .nav-link:hover::after,
+.navbar-nav > .nav-item > .nav-link.active::after {
+  width: 100%;
+}
+
+/* =======================
+   USER BOX (RIGHT SIDE)
+======================= */
+
+.user-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  border: 1px solid #d0d7de;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--primary-blue);
+}
+
+.user-box:hover {
+  background-color: #f5f7fa;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+/* User dropdown trigger */
+.user-box-link {
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: 600;
+  color: var(--primary-blue) !important;
+}
+
+/* IMPORTANT: disable underline animation for user */
+.user-box-link::after {
+  display: none !important;
+}
+
+.user-box-link:hover {
+  background-color: #f5f7fa;
+}
+
+/* =======================
+   DROPDOWN ANIMATION
+======================= */
+
+.dropdown-menu {
+  animation: dropdownFade 0.2s ease forwards;
+  transform-origin: top right;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =======================
+   BUTTON FEEDBACK
+======================= */
+
+.btn {
+  transition: transform 0.1s ease;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+/* =======================
+   PAGE TRANSITION
+======================= */
+
+router-outlet + * {
+  animation: pageFade 0.25s ease;
+}
+
+@keyframes pageFade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+:root {
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-color: #212529;
+  --muted-text: #6c757d;
+  --border-color: #dee2e6;
+  --primary-color: #0d6efd;
+}
+
+body[data-theme="dark"] {
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --text-color: #e5e7eb;
+  --muted-text: #9ca3af;
+  --border-color: #334155;
+  --primary-color: #3b82f6;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: all 0.3s ease;
+}
+.card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.table {
+  color: var(--text-color);
+}
+
+.table thead {
+  background-color: var(--card-bg);
+}
+.btn-outline-secondary {
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+.card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+body[data-theme="dark"] .navbar {
+  background-color: #020617 !important;
+  border-color: #1e293b;
+}
+
+body[data-theme="dark"] .nav-link {
+  color: #e5e7eb !important;
+}
+
+body[data-theme="dark"] .nav-link.active {
+  color: #60a5fa !important;
+}
+/* NAVBAR TEXT */
+.navbar .nav-link,
+.navbar .navbar-brand {
+  color: var(--text-color) !important;
+}
+
+.navbar .nav-link:hover {
+  color: var(--primary-color) !important;
+}
+/* DROPDOWN MENU */
+.dropdown-menu {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.dropdown-item {
+  color: var(--text-color) !important;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dropdown-divider {
+  border-color: var(--border-color);
+}
+body[data-theme="dark"] .navbar {
+  background-color: var(--card-bg) !important;
+}
+.btn-outline-secondary {
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+.table,
+.table th,
+.table td,
+.card-title,
+.card-text {
+  color: var(--text-color) !important;
+}

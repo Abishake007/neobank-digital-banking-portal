@@ -1,0 +1,42 @@
+<div class="card col-md-6 mx-auto">
+  <div class="card-header bg-primary text-white">
+    Send Money
+  </div>
+
+  <div class="card-body">
+    <div class="alert alert-info">
+      Available Balance: ₹ {{ balance }}
+    </div>
+
+    <div *ngIf="message" class="alert alert-success">{{ message }}</div>
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+    <form (ngSubmit)="sendMoney()">
+      <div class="mb-3">
+        <label class="form-label">Receiver Account ID</label>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="toAccountId"
+          name="toAccountId"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Amount</label>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="amount"
+          name="amount"
+          required
+        />
+      </div>
+
+      <button class="btn btn-success w-100">
+        Send
+      </button>
+    </form>
+  </div>
+</div>

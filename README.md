@@ -49,32 +49,6 @@ This project demonstrates real-world banking workflows using a clean full-stack 
 
 ---
 
-## 📁 Project Structure
-
-NeoBank/
-├── backend/                 # Spring Boot backend
-│   ├── src/
-│   ├── pom.xml
-│   └── application.properties
-│
-├── frontend/                # Angular frontend
-│   ├── src/
-│   ├── angular.json
-│   └── package.json
-│
-├── screenshots/             # UI screenshots
-│   ├── dashboard-light.png
-│   ├── dashboard-dark.png
-│   └── transactions.png
-│
-├── .gitignore
-└── README.md
-
-
-
-
----
-
 ## ⚙️ Setup & Run Instructions
 
 ###  Backend (Spring Boot)

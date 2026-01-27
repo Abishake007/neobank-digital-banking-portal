@@ -1,6 +1,7 @@
 # NeoBank – Digital Banking Portal
 
-NeoBank is a full-stack digital banking web application that simulates core online banking functionalities such as secure authentication, account management, fund transfers, transaction history, reports, and a modern dark-mode UI.
+NeoBank is a full-stack digital banking web application that simulates core online banking functionalities such as 
+                                                                                                                    secure authentication, account management, fund transfers, transaction history, reports, and a modern dark-mode UI.
 
 This project demonstrates real-world banking workflows using a clean full-stack architecture.
 
@@ -8,7 +9,7 @@ This project demonstrates real-world banking workflows using a clean full-stack 
 
 ## 🚀 Features
 
-### 🔐 Authentication & Security
+### Authentication & Security
 - JWT-based authentication
 - Secure user login and logout
 - Role-based access (USER / ADMIN)
@@ -20,7 +21,7 @@ This project demonstrates real-world banking workflows using a clean full-stack 
 - Monthly transaction reports
 - Secure User → Account → Transaction mapping
 
-### 🎨 User Interface
+### User Interface
 - Responsive Angular UI
 - Professional banking-style dashboard
 - Dark mode support
@@ -50,29 +51,29 @@ This project demonstrates real-world banking workflows using a clean full-stack 
 
 ## ⚙️ Setup & Run Instructions
 
-### 🔹 Backend (Spring Boot)
+###  Backend (Spring Boot)
 
 1. Navigate to backend folder:
    ```bash
-   cd backend
+   cd backend-banking-portal  
 
 
-Configure MySQL in application.properties
+Configure MySQL in ---application.properties---
 
 Run the application:
 
 mvn spring-boot:run
 
 
-Backend will start on:
+-> Backend will start on:
 
 http://localhost:8080
 
-🔹 Frontend (Angular)
+-> Frontend (Angular)
 
 Navigate to frontend folder:
 
-cd frontend
+cd frontend-banking-portal-ui
 
 
 Install dependencies:
@@ -100,7 +101,7 @@ http://localhost:4200
 
 ![Admin page](<Screenshot 2026-01-27 215800.png>)
 
-🔑 API Highlights
+-> API Highlights
 
 POST /api/auth/login – User authentication
 
@@ -120,24 +121,19 @@ Designed RESTful APIs for real banking use cases
 
 Built a modern Angular UI with standalone components
 
-Implemented dark mode using CSS variables
-
 Improved understanding of secure application architecture
 
 📌 Future Enhancements
 
-PDF/CSV statement download
+   PDF/CSV statement download
 
-Two-factor authentication (2FA)
+   Two-factor authentication (2FA)
 
-Email notifications
+   Email notifications
 
-Admin analytics dashboard
+   Admin analytics dashboard
 
-👤 Author
-
-Abishake A
-Final Year – Computer Science and Engineering
+Developed by-- Abishake A
 
 📜 Disclaimer
 

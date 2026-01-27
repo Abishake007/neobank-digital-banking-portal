@@ -15,6 +15,7 @@ export const routes: Routes = [
   { path: 'send-money', component: SendMoneyComponent },
   { path: 'monthly-report', component: MonthlyReportComponent },
   { path: 'transactions', component: TransactionHistoryComponent },
+  { path: 'admin/users', component:AdminComponent},
 
   {
     path: 'dashboard',

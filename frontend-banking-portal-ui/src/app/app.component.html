@@ -5,8 +5,11 @@
   <div class="container-fluid">
 
     <!-- BRAND -->
-    <a class="navbar-brand fw-bold text-primary d-flex align-items-center">
-      <i class="bi bi-bank me-2"></i> Neo Bank
+    <a
+      class="navbar-brand fw-bold text-primary d-flex align-items-center"
+      routerLink="/dashboard">
+      <i class="bi bi-bank me-2"></i>
+      Neo Bank
     </a>
 
     <!-- TOGGLER (MOBILE) -->
@@ -53,23 +56,37 @@
             Reports
           </a>
         </li>
+
+        <!-- 🔐 ADMIN ONLY LINK -->
+        <li
+          class="nav-item"
+          *ngIf="authService.isAdmin()">
+
+          <a
+            routerLink="/admin/users"
+            routerLinkActive="active"
+            class="nav-link text-danger fw-semibold">
+            <i class="bi bi-shield-lock me-1"></i>
+            Admin
+          </a>
+
+        </li>
       </ul>
 
       <!-- RIGHT SIDE -->
-      <ul class="navbar-nav mb-2 mb-lg-0">
+      <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
 
-        <!-- 🌙 DARK MODE TOGGLE -->
-<li class="nav-item d-flex align-items-center me-2">
-  <button
-    class="btn btn-sm btn-outline-secondary"
-    (click)="themeService.toggleTheme()"
-    title="Toggle Dark Mode">
-    <i class="bi bi-moon-stars"></i>
-  </button>
-</li>
+        <!-- 🌙 DARK MODE -->
+        <li class="nav-item me-2">
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            (click)="themeService.toggleTheme()"
+            title="Toggle Dark Mode">
+            <i class="bi bi-moon-stars"></i>
+          </button>
+        </li>
 
-
-        <!-- LOGIN (logged out) -->
+        <!-- LOGIN (WHEN LOGGED OUT) -->
         <li class="nav-item" *ngIf="!authService.isLoggedIn()">
           <button
             class="btn btn-primary btn-sm"
@@ -78,7 +95,7 @@
           </button>
         </li>
 
-        <!-- USER DROPDOWN (logged in) -->
+        <!-- USER DROPDOWN (WHEN LOGGED IN) -->
         <li
           class="nav-item dropdown"
           *ngIf="authService.isLoggedIn()">
@@ -112,6 +129,7 @@
                 Logout
               </button>
             </li>
+
           </ul>
         </li>
 
@@ -121,4 +139,5 @@
   </div>
 </nav>
 
+<!-- ROUTER CONTENT -->
 <router-outlet></router-outlet>

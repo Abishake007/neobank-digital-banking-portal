@@ -1,197 +1,126 @@
-<!-- ================= WELCOME SECTION ================= -->
-<div class="container mt-4">
-  <div class="p-4 bg-white rounded shadow-sm">
-    <h4 class="fw-bold text-primary mb-1">
-      <i class="bi bi-bank me-2"></i> Welcome to NeoBank Net Banking
-    </h4>
-    <p class="text-muted mb-0">
-     Welcome to NeoBank. This dashboard provides a quick overview of your account
-      balance, recent transactions, and essential banking insights to help you stay
-      in control of your finances.
+<!-- ================= HERO SECTION ================= -->
+<section class="bank-hero">
+
+  <!-- HERO CONTENT -->
+  <div class="container hero-content">
+    <h1>
+      Be part of <br />
+      <span>something bigger</span>
+    </h1>
+    <p>
+      NeoBank is a digital-first banking platform designed to help you
+      manage, grow and protect your money securely.
     </p>
-  </div>
-</div>
 
-<!-- ================= BALANCE + ACTIONS ================= -->
-<div class="container mt-4">
-  <div class="row g-4 align-items-stretch">
-
-    <!-- BALANCE CARD -->
-    <div class="col-lg-4 col-md-12">
-      <div class="card shadow-sm h-100">
-        <div class="card-body d-flex justify-content-between align-items-center">
-          <div>
-            <small class="text-muted">Available Balance</small>
-            <h3 class="fw-bold mt-2">₹ {{ balance }}</h3>
-            <span class="badge bg-success">Savings Account</span>
-          </div>
-          <div class="icon-box bg-primary text-white">
-            <i class="bi bi-wallet2 fs-3"></i>
-          </div>
-        </div>
-      </div>
+    <div class="hero-actions">
+      <a routerLink="/login" class="btn btn-danger">Find out more</a>
     </div>
-
-    <!-- ACTION TILES -->
-    <div class="col-lg-8 col-md-12">
-      <div class="row g-3">
-
-        <div class="col-sm-6 col-12">
-          <a routerLink="/send-money" class="text-decoration-none text-dark">
-            <div class="card hdfc-tile h-100">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-semibold mb-1">Fund Transfer</h6>
-                  <p class="text-muted mb-0">Send money securely</p>
-                </div>
-                <i class="bi bi-send fs-4 text-primary"></i>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-sm-6 col-12">
-          <a routerLink="/monthly-report" class="text-decoration-none text-dark">
-            <div class="card hdfc-tile h-100">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 class="fw-semibold mb-1">Account Statement</h6>
-                  <p class="text-muted mb-0">View monthly reports</p>
-                </div>
-                <i class="bi bi-file-earmark-text fs-4 text-primary"></i>
-              </div>
-            </div>
-          </a>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</div>
-
-<!-- ================= QUICK ACTIONS ================= -->
-<div class="container mt-4">
-  <div class="card shadow-sm">
-    <div class="card-body">
-      <h6 class="fw-bold mb-3">Quick Actions</h6>
-      <div class="row text-center">
-
-        <div class="col">
-          <a routerLink="/send-money" class="text-decoration-none text-dark">
-            <i class="bi bi-send fs-4 text-primary"></i>
-            <p class="small mt-1 mb-0">Send Money</p>
-          </a>
-        </div>
-
-        <div class="col">
-          <a routerLink="/transactions" class="text-decoration-none text-dark">
-            <i class="bi bi-clock-history fs-4 text-primary"></i>
-            <p class="small mt-1 mb-0">Transactions</p>
-          </a>
-        </div>
-
-        <div class="col">
-          <a routerLink="/monthly-report" class="text-decoration-none text-dark">
-            <i class="bi bi-bar-chart fs-4 text-primary"></i>
-            <p class="small mt-1 mb-0">Reports</p>
-          </a>
-        </div>
-
-        <div class="col">
-          <i class="bi bi-shield-lock fs-4 text-success"></i>
-          <p class="small mt-1 mb-0">Secure</p>
-        </div>
-
-      </div>
+    <div class="hero-actions">
+      <a routerLink="/dashboard" class="btn btn-outline-light">
+        Go to Dashboard
+      </a>
     </div>
   </div>
-</div>
 
-<!-- ================= ACCOUNT INSIGHTS ================= -->
-<div class="container mt-4">
-  <div class="row g-3">
+</section>
 
-    <div class="col-md-3 col-6">
-      <div class="card shadow-sm text-center">
-        <div class="card-body">
-          <i class="bi bi-arrow-down-circle fs-4 text-danger"></i>
-          <h6 class="mt-2">Total Debit</h6>
-          <p class="fw-bold mb-0">₹ 2,500</p>
-        </div>
+<!-- ================= FEATURES ================= -->
+<section class="features-section">
+  <div class="container">
+    <div class="row text-center g-4">
+
+      <div class="col-md-3">
+        <i class="bi bi-shield-lock"></i>
+        <h6>Secure Banking</h6>
+        <p>Industry-grade security with JWT & encryption.</p>
       </div>
-    </div>
 
-    <div class="col-md-3 col-6">
-      <div class="card shadow-sm text-center">
-        <div class="card-body">
-          <i class="bi bi-arrow-up-circle fs-4 text-success"></i>
-          <h6 class="mt-2">Total Credit</h6>
-          <p class="fw-bold mb-0">₹ 5,000</p>
-        </div>
+      <div class="col-md-3">
+        <i class="bi bi-lightning"></i>
+        <h6>Fast Transfers</h6>
+        <p>Instant fund transfers across accounts.</p>
       </div>
-    </div>
 
-    <div class="col-md-3 col-6">
-      <div class="card shadow-sm text-center">
-        <div class="card-body">
-          <i class="bi bi-calendar-check fs-4 text-primary"></i>
-          <h6 class="mt-2">This Month</h6>
-          <p class="fw-bold mb-0">Dec 2025</p>
-        </div>
+      <div class="col-md-3">
+        <i class="bi bi-phone"></i>
+        <h6>Mobile Ready</h6>
+        <p>Works perfectly on mobile & desktop.</p>
       </div>
-    </div>
 
-    <div class="col-md-3 col-6">
-      <div class="card shadow-sm text-center">
-        <div class="card-body">
-          <i class="bi bi-shield-check fs-4 text-success"></i>
-          <h6 class="mt-2">Status</h6>
-          <p class="fw-bold mb-0">Active</p>
-        </div>
+      <div class="col-md-3">
+        <i class="bi bi-graph-up-arrow"></i>
+        <h6>Smart Reports</h6>
+        <p>Monthly statements & insights.</p>
       </div>
-    </div>
 
-  </div>
-</div>
-
-<!-- ================= RECENT TRANSACTIONS ================= -->
-<div class="container mt-5">
-  <div class="card shadow-sm">
-    <div class="card-header bg-white fw-semibold">
-      Recent Transactions
-    </div>
-
-    <div class="table-responsive">
-      <table class="table mb-0">
-        <thead class="bg-light">
-          <tr>
-            <th>Date</th>
-            <th>Description</th>
-            <th class="text-end">Amount</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let tx of recentTransactions.slice(0,5)">
-            <td>{{ tx.createdAt | date:'mediumDate' }}</td>
-            <td>
-              {{ tx.fromAccount ? 'Debit Transaction' : 'Credit Transaction' }}
-            </td>
-            <td
-              class="text-end"
-              [ngClass]="tx.fromAccount ? 'text-danger' : 'text-success'">
-              {{ tx.fromAccount ? '-' : '+' }}₹ {{ tx.amount }}
-            </td>
-          </tr>
-
-          <tr *ngIf="recentTransactions.length === 0">
-            <td colspan="3" class="text-center text-muted py-4">
-              No recent transactions available
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
-</div>
+</section>
+
+<!-- ================= IMAGE + CONTENT ================= -->
+<section class="image-content">
+  <div class="container">
+    <div class="row align-items-center g-4">
+
+      <div class="col-md-6">
+        <img
+          src="/vecteezy_modern-bank-building-entrance_48587382.jpeg"
+          class="img-fluid rounded shadow"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <h3>Designed for modern banking</h3>
+        <p>
+          NeoBank combines simplicity and power.
+          Track balances, monitor transactions and stay in control
+          with a clean, intuitive experience.
+        </p>
+        <a routerLink="/login" class="btn btn-primary">
+          Start Banking
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= STATS ================= -->
+<section class="stats-section">
+  <div class="container text-center">
+    <div class="row g-4">
+
+      <div class="col-md-3">
+        <h2>99.9%</h2>
+        <p>Uptime</p>
+      </div>
+
+      <div class="col-md-3">
+        <h2>24×7</h2>
+        <p>Access</p>
+      </div>
+
+      <div class="col-md-3">
+        <h2>100%</h2>
+        <p>Secure</p>
+      </div>
+
+      <div class="col-md-3">
+        <h2>1M+</h2>
+        <p>Transactions</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINAL CTA ================= -->
+<section class="cta-section">
+  <div class="container text-center">
+    <h2>Experience smarter banking today</h2>
+    <p>Join NeoBank and manage your money with confidence.</p>
+    <a routerLink="/login" class="btn btn-danger btn-lg">
+      Get Started
+    </a>
+  </div>
+</section>

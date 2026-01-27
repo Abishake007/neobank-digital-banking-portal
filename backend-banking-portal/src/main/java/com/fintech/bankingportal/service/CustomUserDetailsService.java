@@ -2,6 +2,7 @@ package com.fintech.bankingportal.service;
 
 import com.fintech.bankingportal.entity.User;
 import com.fintech.bankingportal.repository.UserRepository;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,10 +25,15 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found: " + email));
 
+        // ✅ THIS IS THE IMPORTANT LINE
+        if (!user.isEnabled()) {
+            throw new DisabledException("User account is disabled");
+        }
+
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
-                .password(user.getPassword()) // BCrypt password from DB
-                .roles(user.getRole())        // ADMIN / USER
+                .password(user.getPassword())
+                .roles(user.getRole())   // ADMIN / USER
                 .build();
     }
 }

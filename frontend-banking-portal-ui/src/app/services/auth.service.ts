@@ -23,29 +23,36 @@ export class AuthService {
       );
   }
 
+  // ✅ AUTH STATE
   isLoggedIn(): boolean {
-  return !!localStorage.getItem('accessToken');
-}
+    return !!localStorage.getItem('accessToken') && !this.isTokenExpired();
+  }
 
-isTokenExpired(): boolean {
-  const token = localStorage.getItem('accessToken');
-  if (!token) return true;
+  isTokenExpired(): boolean {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return true;
 
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  return Date.now() > payload.exp * 1000;
-}
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return Date.now() > payload.exp * 1000;
+  }
 
-getUserRole(): string | null {
-  const token = localStorage.getItem('accessToken');
-  if (!token) return null;
+  // ✅ USER INFO
+  getUserEmail(): string {
+    return localStorage.getItem('userEmail') || 'User';
+  }
 
-  const payload = JSON.parse(atob(token.split('.')[1]));
-  return payload.role;
-}
+  getUserInitial(): string {
+    const email = this.getUserEmail();
+    return email.charAt(0).toUpperCase();
+  }
 
-getUserEmail(): string {
-  return localStorage.getItem('userEmail') || 'User';
-}
+  getUserRole(): string | null {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return null;
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.role;
+  }
 
   isAdmin(): boolean {
     return this.getUserRole() === 'ADMIN';
@@ -60,20 +67,17 @@ getUserEmail(): string {
     );
   }
 
-  getUserInitial(): string {
-  const email = localStorage.getItem('userEmail');
-  return email ? email.charAt(0).toUpperCase() : 'U';
-}
-
-
   // ✅ LOGOUT
- logout() {
-  const refreshToken = localStorage.getItem('refreshToken');
+  logout() {
+    const refreshToken = localStorage.getItem('refreshToken');
 
-  return this.http.post(
-    'http://localhost:8080/api/auth/logout',
-    { refreshToken }
-  );
-}
-
+    return this.http.post(
+      `${this.apiUrl}/logout`,
+      { refreshToken }
+    ).pipe(
+      tap(() => {
+        localStorage.clear();
+      })
+    );
+  }
 }

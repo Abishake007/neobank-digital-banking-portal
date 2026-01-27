@@ -1,20 +1,104 @@
-<h2>Admin Panel – Users</h2>
+<div class="page-content container">
+<div class="container mt-5">
 
-<p *ngIf="loading">Loading users...</p>
-<p *ngIf="error" style="color:red">{{ error }}</p>
+  <h4 class="fw-bold mb-3">
+    <i class="bi bi-shield-lock-fill me-2"></i> Admin Panel – User Management
+  </h4>
 
-<table *ngIf="!loading && users.length" border="1" cellpadding="5">
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Email</th>
-    <th>Role</th>
-  </tr>
+  <!-- CREATE USER -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h6 class="fw-semibold mb-3">Create User</h6>
 
-  <tr *ngFor="let user of users">
-    <td>{{ user.id }}</td>
-    <td>{{ user.name }}</td>
-    <td>{{ user.email }}</td>
-    <td>{{ user.role }}</td>
-  </tr>
-</table>
+      <div class="row g-3">
+        <div class="col-md-3">
+          <input class="form-control" placeholder="Name"
+            [(ngModel)]="newUser.name">
+        </div>
+
+        <div class="col-md-3">
+          <input class="form-control" placeholder="Email"
+            [(ngModel)]="newUser.email">
+        </div>
+
+        <div class="col-md-2">
+          <input type="password" class="form-control" placeholder="Password"
+            [(ngModel)]="newUser.password">
+        </div>
+
+        <div class="col-md-2">
+          <select class="form-select" [(ngModel)]="newUser.role">
+            <option value="USER">USER</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <button class="btn btn-primary w-100" (click)="createUser()">
+            Create
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- USERS TABLE -->
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+
+      <table class="table table-hover mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>{{ user.id }}</td>
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+
+            <td>
+              <span class="badge"
+                [ngClass]="user.enabled ? 'bg-success' : 'bg-secondary'">
+                {{ user.enabled ? 'Enabled' : 'Disabled' }}
+              </span>
+            </td>
+
+            <td>
+              <span class="badge"
+                [ngClass]="user.role === 'ADMIN' ? 'bg-danger' : 'bg-primary'">
+                {{ user.role }}
+              </span>
+            </td>
+
+            <td class="text-center">
+              <button
+                class="btn btn-sm"
+                [ngClass]="user.enabled ? 'btn-outline-danger' : 'btn-outline-success'"
+                (click)="toggleUser(user)">
+                {{ user.enabled ? 'Disable' : 'Enable' }}
+              </button>
+            </td>
+          </tr>
+
+          <tr *ngIf="users.length === 0">
+            <td colspan="6" class="text-center text-muted py-4">
+              No users found
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+</div>
+</div>

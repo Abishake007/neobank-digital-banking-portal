@@ -37,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
+
             String token = authHeader.substring(7);
 
             String email = jwtUtil.extractUsername(token);
@@ -49,6 +50,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             List.of(new SimpleGrantedAuthority("ROLE_" + role))
                     );
 
+            // 🔥 ADD THIS LINE (THIS IS THE ONE WE NEED)
+            System.out.println("ROLE FROM JWT = " + authentication.getAuthorities());
+
             SecurityContextHolder.getContext()
                     .setAuthentication(authentication);
         }
@@ -56,4 +60,3 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 }
-

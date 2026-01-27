@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../../services/transaction.service';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-monthly-report',
@@ -8,7 +9,6 @@ import { TransactionService } from '../../services/transaction.service';
   imports: [CommonModule],
   templateUrl: './monthly-report.component.html',
   styleUrls: ['./monthly-report.component.css']
-
 })
 export class MonthlyReportComponent implements OnInit {
 
@@ -18,10 +18,17 @@ export class MonthlyReportComponent implements OnInit {
   totalCredit = 0;
   totalDebit = 0;
 
-  constructor(private transactionService: TransactionService) {}
+  // ✅ NEW
+  balance = 0;
+
+  constructor(
+    private transactionService: TransactionService,
+    private dashboardService: DashboardService
+  ) {}
 
   ngOnInit(): void {
     this.loadMonthlyReport();
+    this.loadBalance();   // ✅ NEW
   }
 
   loadMonthlyReport() {
@@ -31,6 +38,14 @@ export class MonthlyReportComponent implements OnInit {
         this.calculateTotals();
       },
       error: () => this.error = 'Failed to load monthly report'
+    });
+  }
+
+  // ✅ NEW
+  loadBalance() {
+    this.dashboardService.getMyBalance().subscribe({
+      next: data => this.balance = data,
+      error: () => console.error('Failed to load balance')
     });
   }
 

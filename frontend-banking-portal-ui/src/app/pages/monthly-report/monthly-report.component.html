@@ -1,3 +1,4 @@
+<div class="page-content container">
 <div class="container">
 
   <!-- Page Title -->
@@ -11,6 +12,17 @@
   <div *ngIf="error" class="alert alert-danger">
     {{ error }}
   </div>
+
+  <!-- ================= BALANCE SUMMARY ================= -->
+<div class="container mt-4">
+  <div class="monthly-balance-card">
+    <div>
+      <small>Available Balance</small>
+      <h3>₹ {{ balance }}</h3>
+    </div>
+    <i class="bi bi-wallet2"></i>
+  </div>
+</div>
 
   <!-- Summary Cards -->
   <div class="row g-4 mb-4">
@@ -89,4 +101,5 @@
     </div>
   </div>
 
+</div>
 </div>

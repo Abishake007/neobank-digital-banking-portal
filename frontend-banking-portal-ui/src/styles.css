@@ -1,33 +1,91 @@
+.page-content {
+  padding-top: 90px; /* navbar height */
+  padding-bottom: 40px;
+}
+
+
 /* =======================
    THEME VARIABLES
 ======================= */
 :root {
-  --primary-blue: #004c8f;   /* HDFC navy */
+  /* Brand */
+  --primary-blue: #004c8f;
   --accent-red: #ed1c24;
-  --light-gray: #f5f7fa;
-}
 
-body {
-  background-color: var(--light-gray);
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
-}
-
-.navbar {
-  background: #ffffff;
+  /* Light Theme */
+  --bg-color: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-color: #212529;
+  --muted-text: #6c757d;
+  --border-color: #dee2e6;
+  --primary-color: #0d6efd;
 }
 
 /* =======================
-   NAVBAR LINKS (LEFT MENU ONLY)
+   DARK THEME
 ======================= */
+body[data-theme="dark"] {
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --text-color: #e5e7eb;
+  --muted-text: #9ca3af;
+  --border-color: #334155;
+  --primary-color: #3b82f6;
+}
 
-/* Scope animation ONLY to main menu links */
+/* =======================
+   GLOBAL
+======================= */
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  
+}
+
+/* =======================
+   GLASSY NAVBAR (FINAL)
+======================= */
+/* GLASS NAVBAR – DARK GLASS ALWAYS */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1050;
+
+  background: rgba(2, 6, 23, 0.65) !important;
+  backdrop-filter: blur(14px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* DARK MODE NAVBAR */
+body[data-theme="dark"] .navbar {
+  background: rgba(2, 6, 23, 0.65) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* NAVBAR TEXT */
+.navbar .nav-link,
+.navbar .navbar-brand {
+  color: #e5e7eb !important;
+}
+
+.navbar .nav-link.active {
+  color: #60a5fa !important;
+}
+
+
+/* =======================
+   NAVBAR LINK UNDERLINE
+======================= */
 .navbar-nav > .nav-item > .nav-link {
   position: relative;
   transition: color 0.2s ease;
-}
-
-.navbar-nav > .nav-item > .nav-link:hover {
-  color: var(--primary-blue);
 }
 
 .navbar-nav > .nav-item > .nav-link::after {
@@ -46,59 +104,65 @@ body {
   width: 100%;
 }
 
+/* ADMIN LINK */
+.nav-link.text-danger {
+  color: #b91c1c !important;
+}
+
+.nav-link.text-danger:hover {
+  color: #7f1d1d !important;
+}
+
 /* =======================
-   USER BOX (RIGHT SIDE)
+   USER BOX
 ======================= */
-
-.user-box {
-  width: 42px;
-  height: 42px;
-  border-radius: 6px;
-  border: 1px solid #d0d7de;
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  color: var(--primary-blue);
-}
-
-.user-box:hover {
-  background-color: #f5f7fa;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-}
-
-/* User dropdown trigger */
 .user-box-link {
-  border: 1px solid #d0d7de;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   padding: 6px 12px;
   font-weight: 600;
   color: var(--primary-blue) !important;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* IMPORTANT: disable underline animation for user */
 .user-box-link::after {
   display: none !important;
 }
 
 .user-box-link:hover {
-  background-color: #f5f7fa;
+  background-color: rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 
 /* =======================
-   DROPDOWN ANIMATION
+   DROPDOWN
 ======================= */
-
 .dropdown-menu {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
   animation: dropdownFade 0.2s ease forwards;
-  transform-origin: top right;
+}
+
+.dropdown-item,
+.dropdown-item-text {
+  color: var(--text-color) !important;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dropdown-divider {
+  border-color: var(--border-color);
 }
 
 @keyframes dropdownFade {
   from {
     opacity: 0;
-    transform: translateY(-5px);
+    transform: translateY(-6px);
   }
   to {
     opacity: 1;
@@ -109,7 +173,6 @@ body {
 /* =======================
    BUTTON FEEDBACK
 ======================= */
-
 .btn {
   transition: transform 0.1s ease;
 }
@@ -118,10 +181,46 @@ body {
   transform: scale(0.97);
 }
 
+.btn-outline-secondary {
+  color: var(--text-color);
+  border-color: var(--border-color);
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+/* =======================
+   CARDS
+======================= */
+.card {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border-color: var(--border-color);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+/* =======================
+   TABLES
+======================= */
+.table,
+.table th,
+.table td {
+  color: var(--text-color) !important;
+}
+
+.table thead {
+  background-color: var(--card-bg);
+}
+
 /* =======================
    PAGE TRANSITION
 ======================= */
-
 router-outlet + * {
   animation: pageFade 0.25s ease;
 }
@@ -135,112 +234,4 @@ router-outlet + * {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-:root {
-  --bg-color: #f8f9fa;
-  --card-bg: #ffffff;
-  --text-color: #212529;
-  --muted-text: #6c757d;
-  --border-color: #dee2e6;
-  --primary-color: #0d6efd;
-}
-
-body[data-theme="dark"] {
-  --bg-color: #0f172a;
-  --card-bg: #1e293b;
-  --text-color: #e5e7eb;
-  --muted-text: #9ca3af;
-  --border-color: #334155;
-  --primary-color: #3b82f6;
-}
-
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: all 0.3s ease;
-}
-.card {
-  background-color: var(--card-bg);
-  color: var(--text-color);
-  border-color: var(--border-color);
-}
-
-.table {
-  color: var(--text-color);
-}
-
-.table thead {
-  background-color: var(--card-bg);
-}
-.btn-outline-secondary {
-  color: var(--text-color);
-  border-color: var(--border-color);
-}
-.card {
-  background-color: var(--card-bg);
-  color: var(--text-color);
-  transition: transform 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-3px);
-}
-body[data-theme="dark"] .navbar {
-  background-color: #020617 !important;
-  border-color: #1e293b;
-}
-
-body[data-theme="dark"] .nav-link {
-  color: #e5e7eb !important;
-}
-
-body[data-theme="dark"] .nav-link.active {
-  color: #60a5fa !important;
-}
-/* NAVBAR TEXT */
-.navbar .nav-link,
-.navbar .navbar-brand {
-  color: var(--text-color) !important;
-}
-
-.navbar .nav-link:hover {
-  color: var(--primary-color) !important;
-}
-/* DROPDOWN MENU */
-.dropdown-menu {
-  background-color: var(--card-bg);
-  color: var(--text-color);
-  border-color: var(--border-color);
-}
-
-.dropdown-item {
-  color: var(--text-color) !important;
-}
-
-.dropdown-item:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-}
-
-.dropdown-divider {
-  border-color: var(--border-color);
-}
-body[data-theme="dark"] .navbar {
-  background-color: var(--card-bg) !important;
-}
-.btn-outline-secondary {
-  color: var(--text-color);
-  border-color: var(--border-color);
-}
-
-.btn-outline-secondary:hover {
-  background-color: var(--primary-color);
-  color: #fff;
-}
-.table,
-.table th,
-.table td,
-.card-title,
-.card-text {
-  color: var(--text-color) !important;
 }

@@ -93,13 +93,13 @@ http://localhost:4200
 # ScreenShots
 ![dashboard page](<Screenshot 2026-01-27 215735.png>)
 
+![Admin page](<Screenshot 2026-01-27 215800.png>)
+
 ![transactions report](<Screenshot 2025-12-22 183704.png>)
 
 ![send money](<Screenshot 2025-12-22 184333.png>)
 
 ![transactions history](<Screenshot 2025-12-22 183620.png>)
-
-![Admin page](<Screenshot 2026-01-27 215800.png>)
 
 -> API Highlights
 

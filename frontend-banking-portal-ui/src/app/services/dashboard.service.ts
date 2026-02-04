@@ -23,4 +23,11 @@ export class DashboardService {
   getMyTransactions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/transactions/my`);
   }
+
+  getMyAccount() {
+  return this.http.get<{ id: number; balance: number }>(
+    `${this.apiUrl}/accounts/my`
+  );
+}
+
 }

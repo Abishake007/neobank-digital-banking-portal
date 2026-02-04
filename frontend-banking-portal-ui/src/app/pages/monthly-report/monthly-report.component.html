@@ -79,10 +79,19 @@
             <td>₹ {{ tx.amount }}</td>
             <td>
               <span
-                class="badge"
-                [ngClass]="tx.fromAccount?.id ? 'bg-danger' : 'bg-success'">
-                {{ tx.fromAccount?.id ? 'DEBIT' : 'CREDIT' }}
-              </span>
+            class="badge"
+             [ngClass]="
+              tx.fromAccount?.id === myAccountId
+               ? 'bg-danger'
+               : 'bg-success'
+                  ">
+                {{
+                 tx.fromAccount?.id === myAccountId
+                   ? 'DEBIT'
+                   : 'CREDIT'
+                 }}
+                </span>
+
             </td>
             <td>
               <span class="badge bg-success">{{ tx.status }}</span>

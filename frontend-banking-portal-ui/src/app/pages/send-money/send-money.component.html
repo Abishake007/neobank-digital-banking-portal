@@ -1,44 +1,59 @@
 <div class="page-content container">
-<div class="card col-md-6 mx-auto">
-  <div class="card-header bg-primary text-white">
-    Send Money
-  </div>
+<div class="page-content container py-5">
+  <div class="glass-card transfer-card mx-auto">
 
-  <div class="card-body">
-    <div class="alert alert-info">
-      Available Balance: ₹ {{ balance }}
+    <!-- Header -->
+    <div class="transfer-header">
+      <h3>Send Money</h3>
+      <span class="balance-badge">
+        Balance: ₹ {{ balance }}
+      </span>
     </div>
 
-    <div *ngIf="message" class="alert alert-success">{{ message }}</div>
-    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <!-- Messages -->
+    <div *ngIf="message" class="status success">
+      {{ message }}
+    </div>
 
-    <form (ngSubmit)="sendMoney()">
+    <div *ngIf="error" class="status error">
+      {{ error }}
+    </div>
+
+    <!-- Form -->
+    <form (ngSubmit)="sendMoney()" class="mt-4">
+
       <div class="mb-3">
         <label class="form-label">Receiver Account ID</label>
         <input
           type="number"
-          class="form-control"
+          class="form-control modern-input"
           [(ngModel)]="toAccountId"
           name="toAccountId"
+          placeholder="Enter account number"
+          min="1"
           required
         />
       </div>
 
-      <div class="mb-3">
+      <div class="mb-4">
         <label class="form-label">Amount</label>
         <input
           type="number"
-          class="form-control"
+          class="form-control modern-input"
           [(ngModel)]="amount"
           name="amount"
+          placeholder="₹ Enter amount"
+          min="1"
           required
         />
       </div>
 
-      <button class="btn btn-success w-100">
-        Send
+      <button class="btn btn-primary w-100 send-btn">
+        Send Money →
       </button>
+
     </form>
   </div>
 </div>
+
 </div>

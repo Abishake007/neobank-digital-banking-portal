@@ -17,9 +17,9 @@ export class MonthlyReportComponent implements OnInit {
 
   totalCredit = 0;
   totalDebit = 0;
-
-  // ✅ NEW
   balance = 0;
+
+  myAccountId!: number;
 
   constructor(
     private transactionService: TransactionService,
@@ -27,13 +27,24 @@ export class MonthlyReportComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadMonthlyReport();
-    this.loadBalance();   // ✅ NEW
+    this.loadMyAccount();
+  }
+
+  // ✅ Load logged-in user's account
+  loadMyAccount() {
+    this.dashboardService.getMyAccount().subscribe({
+      next: (acc: { id: number; balance: number }) => {
+        this.myAccountId = acc.id;
+        this.balance = acc.balance;
+        this.loadMonthlyReport();
+      },
+      error: () => this.error = 'Failed to load account'
+    });
   }
 
   loadMonthlyReport() {
     this.transactionService.getMonthlyReport().subscribe({
-      next: data => {
+      next: (data: any[]) => {
         this.reports = data;
         this.calculateTotals();
       },
@@ -41,22 +52,17 @@ export class MonthlyReportComponent implements OnInit {
     });
   }
 
-  // ✅ NEW
-  loadBalance() {
-    this.dashboardService.getMyBalance().subscribe({
-      next: data => this.balance = data,
-      error: () => console.error('Failed to load balance')
-    });
-  }
-
+  // ✅ REAL BANKING LOGIC
   calculateTotals() {
     this.totalCredit = 0;
     this.totalDebit = 0;
 
     this.reports.forEach(tx => {
-      if (tx.fromAccount) {
+      if (tx.fromAccount?.id === this.myAccountId) {
         this.totalDebit += tx.amount;
-      } else {
+      }
+
+      if (tx.toAccount?.id === this.myAccountId) {
         this.totalCredit += tx.amount;
       }
     });

@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
-@PreAuthorize("hasRole('ADMIN')")   // ✅ THIS IS THE KEY
+@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
     private final UserRepository userRepository;
@@ -30,19 +30,19 @@ public class AdminController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ✅ TEST ENDPOINT (optional, but useful)
+    // TEST ENDPOINT (optional, but useful)
     @GetMapping("/test")
     public String testAdmin() {
         return "ADMIN ACCESS OK";
     }
 
-    // ✅ VIEW USERS
+    // VIEW USERS
     @GetMapping("/users")
     public List<AdminUserDTO> getAllUsers() {
         return userRepository.findAllAdminUsers();
     }
 
-    // ✅ CREATE USER + ACCOUNT
+    // CREATE USER + ACCOUNT
     @PostMapping("/users")
     public String createUser(@RequestBody CreateUserRequest request) {
 

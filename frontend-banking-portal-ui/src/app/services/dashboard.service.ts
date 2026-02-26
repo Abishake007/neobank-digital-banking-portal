@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
 
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = `${API_BASE_URL}/api`;
 
   constructor(private http: HttpClient) {}
 
   // ✅ JWT-based balance
  getMyBalance() {
   return this.http.get<number>(
-    'http://localhost:8080/api/accounts/balance'
+    `${API_BASE_URL}/api/accounts/balance`
   );
 }
 

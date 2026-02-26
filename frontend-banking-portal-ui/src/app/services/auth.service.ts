@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080/api/auth';
-
+  private apiUrl = `${API_BASE_URL}/api/auth`;
   constructor(private http: HttpClient) {}
 
   // ✅ LOGIN + SAVE TOKENS

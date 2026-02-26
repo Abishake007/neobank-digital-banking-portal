@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
 
-  private baseUrl = 'http://localhost:8080/api/transactions';
+  private baseUrl = `${API_BASE_URL}/api/transactions`;
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +22,7 @@ export class TransactionService {
   }
   getMonthlyReport() {
   return this.http.get<any[]>(
-    'http://localhost:8080/api/transactions/monthly'
+    `${API_BASE_URL}/api/transactions/monthly`
   );
 }
 

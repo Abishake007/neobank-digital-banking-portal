@@ -6,7 +6,7 @@ COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 
-# 👇 ADD THIS LINE (IMPORTANT)
+#  ADD THIS LINE (IMPORTANT)
 RUN chmod +x mvnw
 
 RUN ./mvnw dependency:go-offline

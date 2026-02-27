@@ -7,6 +7,9 @@ This project demonstrates real-world banking workflows using a clean full-stack 
 
 ---
 
+## [Preview Link](https://neobank-digital-banking-portal.vercel.app/)
+
+
 ## 🚀 Features
 
 ### Authentication & Security

@@ -8,8 +8,6 @@ This project demonstrates real-world banking workflows using a clean full-stack 
 ---
 
 ## [Preview Link](https://neobank-digital-banking-portal.vercel.app/)
-### Email   : admin@gmail.com
-### Password: 1234
 
 ## 🚀 Features
 

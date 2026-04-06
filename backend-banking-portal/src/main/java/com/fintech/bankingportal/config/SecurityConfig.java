@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()   // ✅ LOGIN ALLOWED
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/savings/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(

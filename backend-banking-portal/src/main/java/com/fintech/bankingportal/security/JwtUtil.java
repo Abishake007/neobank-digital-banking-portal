@@ -15,7 +15,7 @@ public class JwtUtil {
     private static final String SECRET =
             "mysecretkeymysecretkeymysecretkeymysecretkey";
 
-    private static final long ACCESS_TOKEN_EXPIRY = 1000 * 60 * 15; // 15 min
+    private static final long ACCESS_TOKEN_EXPIRY = 1000L * 60 * 60 * 24 * 7; // 365 days
     private static final long REFRESH_TOKEN_EXPIRY = 1000L * 60 * 60 * 24 * 7; // 7 days
 
     private Key getSignKey() {

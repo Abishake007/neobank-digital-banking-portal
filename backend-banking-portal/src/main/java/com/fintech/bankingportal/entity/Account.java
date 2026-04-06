@@ -25,6 +25,9 @@ public class Account {
     @Column(nullable = false, precision = 19, scale = 2)
     private BigDecimal balance;
 
+    @Column(nullable = false, precision = 19, scale = 2)
+    private BigDecimal lockedBalance = BigDecimal.ZERO;
+
     @Column(nullable = false)
     private String accountType; // SAVINGS / CURRENT
 
@@ -51,9 +54,20 @@ public class Account {
         this.balance = BigDecimal.ZERO;
     }
 
+    public BigDecimal getAvailableBalance() {
+        return this.balance.subtract(this.lockedBalance != null ? this.lockedBalance : BigDecimal.ZERO);
+    }
     // =========================
     // Getters & Setters
     // =========================
+
+    public BigDecimal getLockedBalance() {
+        return lockedBalance;
+    }
+
+    public void setLockedBalance(BigDecimal lockedBalance) {
+        this.lockedBalance = lockedBalance;
+    }
     public Long getId() {
         return id;
     }

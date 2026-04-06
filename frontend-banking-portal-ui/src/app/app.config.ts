@@ -3,12 +3,14 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { jwtInterceptor } from './interceptors/jwt.interceptor';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
       withInterceptors([jwtInterceptor]) // ✅ THIS LINE FIXES EVERYTHING
-    )
+    ),
+    provideCharts(withDefaultRegisterables())
   ]
 };

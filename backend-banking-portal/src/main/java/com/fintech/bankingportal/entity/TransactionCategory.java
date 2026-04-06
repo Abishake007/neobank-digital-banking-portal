@@ -1,4 +1,5 @@
 package com.fintech.bankingportal.entity;
 
-public class TransactionCategory {
+public enum TransactionCategory {
+    FOOD, SHOPPING, BILLS, ENTERTAINMENT, TRANSPORT, RENT, OTHERS
 }

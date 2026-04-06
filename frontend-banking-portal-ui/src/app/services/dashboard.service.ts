@@ -31,4 +31,9 @@ export class DashboardService {
   );
 }
 
+// dashboard.service.ts
+getMyAccountData(): Observable<any> {
+  return this.http.get<any>(`${API_BASE_URL}/api/accounts/my`);
+}
+
 }

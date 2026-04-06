@@ -1,59 +1,63 @@
-<div class="page-content container">
 <div class="page-content container py-5">
   <div class="glass-card transfer-card mx-auto">
-
-    <!-- Header -->
     <div class="transfer-header">
       <h3>Send Money</h3>
-      <span class="balance-badge">
-        Balance: ₹ {{ balance }}
-      </span>
+      
+      <div class="balance-badge p-3 bg-white shadow-sm rounded">
+  <div class="d-flex justify-content-between">
+    <span class="text-muted small">Account:</span>
+    <span class="fw-bold">{{ accountNumber }}</span>
+  </div>
+  <div class="d-flex justify-content-between">
+    <span class="text-muted small">Total Wealth:</span>
+    <span class="fw-bold">₹ {{ balance }}</span>
+  </div>
+  <div class="d-flex justify-content-between text-danger" *ngIf="lockedBalance > 0">
+    <span class="small">Locked for Bills:</span>
+    <span class="small">- ₹ {{ lockedBalance }}</span>
+  </div>
+  <hr class="my-2">
+  <div class="d-flex justify-content-between">
+    <span class="fw-bold text-dark">Spendable Balance:</span>
+    <span class="fw-bold text-success">₹ {{ availableBalance }}</span>
+  </div>
+</div>
     </div>
 
-    <!-- Messages -->
-    <div *ngIf="message" class="status success">
-      {{ message }}
-    </div>
+    <div *ngIf="message" class="status success mt-3 p-2 rounded text-center">{{ message }}</div>
+    <div *ngIf="error" class="status error mt-3 p-2 rounded text-center text-danger bg-light-danger">{{ error }}</div>
 
-    <div *ngIf="error" class="status error">
-      {{ error }}
-    </div>
-
-    <!-- Form -->
     <form (ngSubmit)="sendMoney()" class="mt-4">
+      <div class="mb-3">
+        <label class="form-label">Receiver Account Number</label>
+        <input type="text" class="form-control modern-input" [(ngModel)]="toAccountNumber" name="toAccountNumber" placeholder="Enter account number" required />
+      </div>
 
       <div class="mb-3">
-        <label class="form-label">Receiver Account ID</label>
-        <input
-          type="number"
-          class="form-control modern-input"
-          [(ngModel)]="toAccountId"
-          name="toAccountId"
-          placeholder="Enter account number"
-          min="1"
-          required
-        />
+        <label class="form-label">Amount</label>
+        <input type="number" class="form-control modern-input" [(ngModel)]="amount" name="amount" placeholder="₹ Enter amount" min="1" required />
+        <div class="form-text text-end small" *ngIf="amount > availableBalance">
+           ⚠️ Amount exceeds spendable limit!
+        </div>
       </div>
 
       <div class="mb-4">
-        <label class="form-label">Amount</label>
-        <input
-          type="number"
-          class="form-control modern-input"
-          [(ngModel)]="amount"
-          name="amount"
-          placeholder="₹ Enter amount"
-          min="1"
-          required
-        />
+        <label class="form-label">Purpose / Category</label>
+        <select class="form-control modern-input" [(ngModel)]="category" name="category" required>
+          <option value="" disabled selected>Select a category</option>
+          <option value="FOOD">Food & Dining</option>
+          <option value="SHOPPING">Shopping</option>
+          <option value="BILLS">Bills & Utilities</option>
+          <option value="ENTERTAINMENT">Entertainment</option>
+          <option value="TRANSPORT">Transport</option>
+          <option value="RENT">Rent</option>
+          <option value="OTHERS">Others</option>
+        </select>
       </div>
 
-      <button class="btn btn-primary w-100 send-btn">
+      <button class="btn btn-primary w-100 send-btn" [disabled]="!category || amount > availableBalance">
         Send Money →
       </button>
-
     </form>
   </div>
-</div>
-
 </div>

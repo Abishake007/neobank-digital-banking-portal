@@ -1,121 +1,204 @@
-<!-- ================= HERO SECTION ================= -->
 <section class="bank-hero">
-
-  <!-- HERO CONTENT -->
   <div class="container hero-content">
-    <h1>
-      Be part of <br />
-      <span>something bigger</span>
-    </h1>
-    <p>
-      NeoBank is a digital-first banking platform designed to help you
-      manage, grow and protect your money securely.
-    </p>
-
+    <h1>Be part of <br /><span>something bigger</span></h1>
+    <p>NeoBank is a digital-first banking platform designed to help you manage, grow and protect your money securely.</p>
     <div class="hero-actions">
       <a routerLink="/login" class="btn btn-danger">Find out more</a>
     </div>
   </div>
-
 </section>
 
-<!-- ================= FEATURES ================= -->
-<section class="features-section">
+<section class="features-section py-5">
   <div class="container">
     <div class="row text-center g-4">
-
       <div class="col-md-3">
-        <i class="bi bi-shield-lock"></i>
+        <i class="bi bi-shield-lock fs-1 text-danger"></i>
         <h6>Secure Banking</h6>
         <p>Industry-grade security with JWT & encryption.</p>
       </div>
-
       <div class="col-md-3">
-        <i class="bi bi-lightning"></i>
+        <i class="bi bi-lightning fs-1 text-danger"></i>
         <h6>Fast Transfers</h6>
         <p>Instant fund transfers across accounts.</p>
       </div>
-
       <div class="col-md-3">
-        <i class="bi bi-phone"></i>
+        <i class="bi bi-phone fs-1 text-danger"></i>
         <h6>Mobile Ready</h6>
         <p>Works perfectly on mobile & desktop.</p>
       </div>
-
       <div class="col-md-3">
-        <i class="bi bi-graph-up-arrow"></i>
+        <i class="bi bi-graph-up-arrow fs-1 text-danger"></i>
         <h6>Smart Reports</h6>
         <p>Monthly statements & insights.</p>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ================= IMAGE + CONTENT ================= -->
-<section class="image-content">
+
+<section class="analytics-preview py-5 bg-light">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 col-md-12">
+        <div class="card shadow-lg border-0 p-4" style="border-radius: 20px;">
+          <div class="text-center mb-3">
+            <h6 class="text-uppercase text-muted small fw-bold">Your Real-Time Insights</h6>
+          </div>
+          <div class="chart-container">
+            <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType" [options]="chartOptions"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <h2 class="fw-bold">Visualize Your Spending</h2>
+        <p class="lead text-muted">Don't just track your balance—understand your habits.</p>
+        <ul class="list-unstyled mt-4">
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i> Real-time spending breakdown</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-danger me-2"></i> Categorized transaction history</li>
+          <li><i class="bi bi-check-circle-fill text-danger me-2"></i> Automated monthly analytics</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container my-5">
+  <div class="row g-4">
+    <div class="col-lg-4 col-md-5">
+      <div class="card p-4 shadow-sm border-0 text-white mb-4" 
+           style="border-radius: 20px; background: linear-gradient(135deg, #198754 0%, #146c43 100%); min-height: 180px;">
+        <div class="d-flex justify-content-between align-items-start">
+           <p class="mb-0 text-uppercase fw-bold opacity-75" style="font-size: 0.75rem; letter-spacing: 0.5px;">Available to Spend</p>
+           <i class="bi bi-wallet2 opacity-25 fs-5"></i>
+        </div>
+        <h1 class="fw-bold my-2" style="font-size: 2.2rem;">₹ {{ balance }}</h1>
+        
+        <div *ngIf="lockedBalance > 0" 
+             class="mt-auto d-flex justify-content-between align-items-center bg-white bg-opacity-10 p-2 px-3 rounded-pill"
+             style="font-size: 0.85rem;">
+          <span class="opacity-90"><i class="bi bi-lock-fill me-1"></i> Locked</span>
+          <span class="fw-bold">₹ {{ lockedBalance }}</span>
+        </div>
+      </div>
+
+      <div class="card border-0 shadow-sm p-4 text-center" style="border-radius: 20px;">
+        <div class="mb-2"><i class="bi bi-plus-circle text-success" style="font-size: 2.5rem;"></i></div>
+        <h6 class="fw-bold mb-1">Add Funds</h6>
+        <p class="text-muted mb-3" style="font-size: 0.8rem; line-height: 1.4;">Top up your balance via secure UPI VPA instantly.</p>
+        <button routerLink="/add-funds" class="btn btn-outline-success btn-sm w-100 py-2 fw-bold rounded-pill" style="font-size: 0.85rem;">Open Top-up</button>
+      </div>
+    </div>
+
+    <div class="col-lg-8 col-md-7">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">Your <span class="text-primary">Pockets</span></h4>
+        <button class="btn btn-primary btn-sm rounded-pill px-3 fw-bold" style="font-size: 0.75rem;" data-bs-toggle="modal" data-bs-target="#createGoalModal">
+          <i class="bi bi-plus-lg me-1"></i> NEW POCKET
+        </button>
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6" *ngFor="let pocket of pockets">
+          <div class="card border-0 shadow-sm p-3 h-100" style="border-radius: 15px; background: #f8f9fa;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="fw-bold text-dark" style="font-size: 0.9rem;">{{ pocket.goalName }}</span>
+              <span class="badge bg-white text-primary border shadow-sm" style="font-size: 0.7rem;">
+                {{ pocket.targetAmount > 0 ? ((pocket.savedAmount / pocket.targetAmount) * 100).toFixed(0) : 0 }}%
+              </span>
+            </div>
+            
+            <div class="progress mb-2" style="height: 5px;">
+              <div class="progress-bar bg-primary" [style.width]="(pocket.targetAmount > 0 ? (pocket.savedAmount / pocket.targetAmount * 100) : 0) + '%'"></div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-1">
+              <small class="text-muted" style="font-size: 0.75rem;">₹{{ pocket.savedAmount }} / ₹{{ pocket.targetAmount }}</small>
+              
+              <button *ngIf="pocket.savedAmount < pocket.targetAmount" 
+                      class="btn btn-link btn-sm p-0 text-decoration-none fw-bold text-primary" 
+                      style="font-size: 0.8rem;"
+                      (click)="openStashModal(pocket)" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#stashModal">Stash</button>
+
+              <button *ngIf="pocket.savedAmount >= pocket.targetAmount" 
+                      class="btn btn-success btn-sm fw-bold px-3 rounded-pill shadow-sm" 
+                      style="font-size: 0.75rem;"
+                      (click)="claimPocket(pocket.id)">Claim</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 text-center py-5 border rounded-4" *ngIf="pockets.length === 0" style="border: 2px dashed #dee2e6 !important;">
+          <i class="bi bi-piggy-bank fs-2 text-muted opacity-25"></i>
+          <p class="text-muted mt-2 small">No active pockets yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="image-content py-5">
   <div class="container">
     <div class="row align-items-center g-4">
-
       <div class="col-md-6">
-        <img
-          src="/vecteezy_modern-bank-building-entrance_48587382.jpeg"
-          class="img-fluid rounded shadow"
-        />
+        <img src="/vecteezy_modern-bank-building-entrance_48587382.jpeg" class="img-fluid rounded shadow" alt="Bank" />
       </div>
-
       <div class="col-md-6">
         <h3>Designed for modern banking</h3>
-        <p>
-          NeoBank combines simplicity and power.
-          Track balances, monitor transactions and stay in control
-          with a clean, intuitive experience.
-        </p>
-        <a routerLink="/login" class="btn btn-primary">
-          Start Banking
-        </a>
+        <p>NeoBank combines simplicity and power. Track balances and stay in control with a clean experience.</p>
+        <a routerLink="/login" class="btn btn-primary">Start Banking</a>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ================= STATS ================= -->
-<section class="stats-section">
-  <div class="container text-center">
-    <div class="row g-4">
 
-      <div class="col-md-3">
-        <h2>99.9%</h2>
-        <p>Uptime</p>
+<div class="modal fade" id="createGoalModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow" style="border-radius: 20px;">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="fw-bold">Create New Pocket</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
-
-      <div class="col-md-3">
-        <h2>24×7</h2>
-        <p>Access</p>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="small fw-bold mb-1">Goal Name</label>
+          <input type="text" [(ngModel)]="newGoal.name" class="form-control" placeholder="e.g. Laptop" />
+        </div>
+        <div class="mb-3">
+          <label class="small fw-bold mb-1">Target Amount (₹)</label>
+          <input type="number" [(ngModel)]="newGoal.target" class="form-control" placeholder="5000" />
+        </div>
+        <button type="button" (click)="createGoal()" class="btn btn-primary w-100 fw-bold py-2" data-bs-dismiss="modal">Create Pocket</button>
       </div>
-
-      <div class="col-md-3">
-        <h2>100%</h2>
-        <p>Secure</p>
-      </div>
-
-      <div class="col-md-3">
-        <h2>1M+</h2>
-        <p>Transactions</p>
-      </div>
-
     </div>
   </div>
-</section>
+</div>
 
-<!-- ================= FINAL CTA ================= -->
-<section class="cta-section">
-  <div class="container text-center">
+<div class="modal fade" id="stashModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow" style="border-radius: 20px;">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="fw-bold">Stash Funds</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted small">Target: <strong class="text-primary">{{ selectedPocket?.goalName }}</strong></p>
+        <div class="mb-3">
+          <label class="small fw-bold">Amount to Stash (₹)</label>
+          <input type="number" [(ngModel)]="stashData.amount" class="form-control" placeholder="Enter amount" />
+        </div>
+        <button (click)="onStash()" class="btn btn-warning w-100 fw-bold" data-bs-dismiss="modal">Confirm Stash</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="cta-section py-5 text-center bg-dark text-white">
+  <div class="container">
     <h2>Experience smarter banking today</h2>
     <p>Join NeoBank and manage your money with confidence.</p>
-    <a routerLink="/login" class="btn btn-danger btn-lg">
-      Get Started
-    </a>
+    <a routerLink="/login" class="btn btn-danger btn-lg">Get Started</a>
   </div>
 </section>

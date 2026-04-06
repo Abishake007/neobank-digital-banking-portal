@@ -4,6 +4,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
+import { AddFundsComponent } from './pages/add-funds/add-funds.component';
 import { SendMoneyComponent } from './pages/send-money/send-money.component';
 import { TransactionHistoryComponent } from './pages/transaction-history/transaction-history.component';
 import { MonthlyReportComponent } from './pages/monthly-report/monthly-report.component';
@@ -13,6 +14,9 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'send-money', component: SendMoneyComponent },
+  { path: 'add-funds', component: AddFundsComponent, 
+    canActivate: [authGuard] // Ensures only logged-in users can access it
+  },
   { path: 'monthly-report', component: MonthlyReportComponent },
   { path: 'transactions', component: TransactionHistoryComponent },
   { path: 'admin/users', component:AdminComponent},

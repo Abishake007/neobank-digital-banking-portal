@@ -10,6 +10,9 @@
   color: #ffffff;
 }
 
+.letter-spacing-1 {
+  letter-spacing: 1px;
+}
 .hero-content {
   padding-top: 150px;
   max-width: 600px;
@@ -31,6 +34,36 @@
   margin-right: 20px;
 }
 
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 300px; /* Controlled height */
+  width: 100%;
+  max-width: 400px; /* Prevents the doughnut from becoming massive */
+}
+
+/* Ensure the chart canvas stays within the container */
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.bg-soft-primary { background-color: #e7f1ff; }
+.bg-soft-warning { background-color: #fff3cd; }
+
+.icon-circle {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
 /* ================= FEATURES ================= */
 .features-section {
   padding: 80px 0;
@@ -77,4 +110,11 @@
   background-size: cover;
   background-position: center;
   color: #ffffff;
+}
+
+.chart-wrapper {
+  display: block;
+  height: 300px;
+  width: 100%;
+  margin: 0 auto;
 }

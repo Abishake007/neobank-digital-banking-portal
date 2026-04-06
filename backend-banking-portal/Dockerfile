@@ -1,22 +1,18 @@
-FROM eclipse-temurin:21-jdk-alpine
-
+# Stage 1: Build
+FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /app
-
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-
-#  ADD THIS LINE (IMPORTANT)
+COPY . .
 RUN chmod +x mvnw
-
-RUN ./mvnw dependency:go-offline
-
-COPY src src
-
 RUN ./mvnw clean package -DskipTests
 
-ENV PORT=8080
+# Stage 2: Run
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+# Copy only the built JAR from the build stage
+COPY --from=build /app/target/*.jar app.jar
 
+ENV PORT=8080
 EXPOSE 8080
 
-CMD ["sh", "-c", "java -jar target/*.jar --server.port=${PORT}"]
+# Run the JAR
+ENTRYPOINT ["java", "-jar", "app.jar"]

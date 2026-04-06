@@ -1,20 +1,21 @@
-# Stage 1: Build
+# Use JDK 21 to match your project
 FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /app
 
-# Copy the entire project
+# Since Root Directory is 'backend-banking-portal', 
+# '.' refers to the contents of that folder
 COPY . .
 
-# Grant permission and build the sub-project
+# Grant permission and build
 RUN chmod +x mvnw
-RUN ./mvnw clean package -DskipTests -pl backend-banking-portal -am
+RUN ./mvnw clean package -DskipTests
 
 # Stage 2: Run
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
-# Copy the built JAR from the subfolder's target directory
-COPY --from=build /app/backend-banking-portal/target/*.jar app.jar
+# Copy the built JAR from the target folder
+COPY --from=build /app/target/*.jar app.jar
 
 ENV PORT=8080
 EXPOSE 8080

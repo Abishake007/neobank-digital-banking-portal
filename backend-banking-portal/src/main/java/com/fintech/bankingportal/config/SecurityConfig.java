@@ -75,7 +75,7 @@ public CorsConfigurationSource corsConfigurationSource() {
     config.setAllowedOriginPatterns(
             java.util.List.of(
                     "http://localhost:4200",
-                    "https://*.vercel.app"
+                    "https://neobank-digital-banking-portal.vercel.app"
             )
     );
 

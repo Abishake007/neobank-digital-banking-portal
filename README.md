@@ -1,27 +1,31 @@
 ## NeoBank – Digital Banking Portal
 
-NeoBank is a full-stack digital banking web application that simulates core online banking functionalities such as 
-                                                                                                                    secure authentication, account management, fund transfers, transaction history, reports, and a modern dark-mode UI.
+#### NeoBank is a simple and secure full-stack website that acts like a real-world digital bank. It allows users to manage their money, track their spending, and save for future goals through a clean, modern interface.
 
-This project demonstrates real-world banking workflows using a clean full-stack architecture.
+#### Smart Tools
+ - Virtual Pockets: Create separate "pockets" to stash money away for specific goals (like a new        laptop or travel). This keeps your savings safe from your everyday spending.
+ - Detailed Reports: View your monthly activity in a clean format to see where your money is going.
+ - Smart Analytics: Visual charts that show your spending patterns and account growth over time.
 
----
 
-## [Preview Link](https://neobank-digital-banking-portal.vercel.app/)
+<a href="https://neobank-digital-banking-portal.vercel.app/">
+  <p align="center">
+    <img src="home.png" width="900" alt="Click to View Live Demo">
+    <br>
+    <em>Click the image above to view the live portal</em>
+  </p>
+</a>
 
-## 🚀 Features
+### Key Features
+### Security and Access Control
+#### - JWT Authentication: Robust stateless security using JSON Web Tokens for session management.
+#### - Role-Based Access Control (RBAC): Distinct workflows and permissions for User and Admin roles.
 
-### Authentication & Security
-- JWT-based authentication
-- Secure user login and logout
-- Role-based access (USER / ADMIN)
-
-### 💳 Banking Operations
-- View account balance
-- Fund transfer between accounts
-- Transaction history
-- Monthly transaction reports
-- Secure User → Account → Transaction mapping
+### Banking Operations
+#### - Real-Time Dashboard: Instant access to available and locked balances with automated UI synchronization.
+#### - Virtual Pockets: Create and manage targeted savings goals with automated fund stashing and claim functionality.
+#### - Fund Transfers: Secure peer-to-peer transfers with category-based tracking and transaction mapping.
+#### - Data Analytics: Interactive spending breakdowns and financial summaries powered by Chart.js.
 
 ### User Interface
 #### - Angular 19: Built using the latest framework standards, including Standalone Components and Signals.
@@ -60,57 +64,31 @@ This project demonstrates real-world banking workflows using a clean full-stack 
    
         ng serve
 
+#### API Documentation
+ -  POST /api/auth/login: Authenticates user and returns JWT.
+ - GET /api/accounts/my: Retrieves current user account details and balance.
+ - POST /api/transactions/transfer: Executes a fund transfer between accounts.
+ - GET /api/savings/my-pockets: Fetches all savings goals associated with the user.
+ - POST /api/savings/stash: Moves funds from available balance to a specific pocket.
 
-Frontend will start on:
+#### Future Enhancements
+ - PDF/CSV statement download
+ - Two-factor authentication (2FA)
+ - Email notifications
+ - Admin analytics dashboard
 
-http://localhost:4200
+### ScreenShots
+![dashboard with transaction analytics and virtual pockets with money locking for Emi or other savings](<analytics.png>)
 
-# ScreenShots
-![dashboard page](<Screenshot 2026-01-27 215735.png>)
+![Admin page](<admin.png>)
 
-![Admin page](<Screenshot 2026-01-27 215800.png>)
+![transactions report](<monthlyreport.png>)
 
-![transactions report](<Screenshot 2025-12-22 183704.png>)
+![send money](<sendmoney.png>)
 
-![send money](<Screenshot 2025-12-22 184333.png>)
+![transactions history](<transhistory.png>)
 
-![transactions history](<Screenshot 2025-12-22 183620.png>)
+![deposite money](<inputfund.png>)
 
--> API Highlights
-
-POST /api/auth/login – User authentication
-
-GET /api/accounts/my – Fetch user account balance
-
-POST /api/transactions/transfer – Transfer funds
-
-GET /api/transactions – Transaction history
-
-GET /api/transactions/monthly-report – Monthly report
-
-🎯 Learning Outcomes
-
-Implemented JWT-based authentication in a full-stack app
-
-Designed RESTful APIs for real banking use cases
-
-Built a modern Angular UI with standalone components
-
-Improved understanding of secure application architecture
-
-📌 Future Enhancements
-
-   PDF/CSV statement download
-
-   Two-factor authentication (2FA)
-
-   Email notifications
-
-   Admin analytics dashboard
-
-Developed by-- Abishake A
-
-📜 Disclaimer
-
-This project is developed for educational purposes only and does not represent a real banking system.
+![login](<login.png>)
 

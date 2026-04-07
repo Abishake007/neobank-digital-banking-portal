@@ -1,50 +1,75 @@
-<div class="container d-flex justify-content-center align-items-center vh-100">
-  <div class="card shadow" style="width: 380px;">
+<div class="bank-login-wrapper">
+  <div class="bank-login-box shadow-lg">
     
-    <div class="card-header bg-primary text-white text-center">
-      <h4>Banking Portal</h4>
-      <small>Secure Login</small>
-    </div>
-
-    <div class="card-body">
-
-      <div *ngIf="error" class="alert alert-danger">
-        {{ error }}
+    <div class="bank-sidebar d-none d-md-flex">
+      <div class="sidebar-inner">
+        <i class="bi bi-shield-lock-fill display-4 mb-3"></i>
+        <h2 class="fw-bold tracking-tight">NEO BANK</h2>
+        <div class="divider-line my-4"></div>
+        <p class="small text-white-50">Enterprise-grade security for your digital assets. Log in to manage your funds and view real-time analytics.</p>
       </div>
-
-      <form (ngSubmit)="login()">
-
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            [(ngModel)]="email"
-            name="email"
-            required
-          />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            [(ngModel)]="password"
-            name="password"
-            required
-          />
-        </div>
-
-        <button class="btn btn-primary w-100" type="submit">
-          Login
-        </button>
-
-      </form>
     </div>
 
-    <div class="card-footer text-center text-muted">
-      © Banking Portal
+    <div class="bank-form-container">
+      <div class="form-content">
+        <h3 class="fw-bold text-dark mb-1">Account Login</h3>
+        <p class="text-muted small mb-4">Please enter your registered credentials</p>
+
+        @if (error) {
+          <div class="alert alert-danger border-0 small py-2 mb-4">
+            <i class="bi bi-exclamation-circle-fill me-2"></i> {{ error }}
+          </div>
+        }
+
+        <form (ngSubmit)="login()">
+          <div class="mb-3">
+            <label class="form-label-top">EMAIL ADDRESS</label>
+            <div class="input-group-custom">
+              <span class="input-icon"><i class="bi bi-envelope text-muted"></i></span>
+              <input
+                type="email"
+                class="form-input"
+                placeholder="email@example.com"
+                [(ngModel)]="email"
+                name="email"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label-top">PASSWORD</label>
+            <div class="input-group-custom">
+              <span class="input-icon"><i class="bi bi-lock text-muted"></i></span>
+              <input
+                type="password"
+                class="form-input"
+                placeholder="••••••••"
+                [(ngModel)]="password"
+                name="password"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="remember">
+              <label class="form-check-label small text-muted" for="remember">Remember this device</label>
+            </div>
+            <a href="#" class="text-primary small text-decoration-none fw-bold">Forgot Password?</a>
+          </div>
+
+          <button class="btn-bank-primary w-100" type="submit">
+            SECURE SIGN IN
+          </button>
+        </form>
+
+        <div class="footer-note mt-5 text-center">
+          <span class="text-muted small">New to Neo Bank?</span>
+          <a routerLink="/register" class="text-primary small fw-bold text-decoration-none ms-2">Open an Account</a>
+        </div>
+      </div>
     </div>
 
   </div>

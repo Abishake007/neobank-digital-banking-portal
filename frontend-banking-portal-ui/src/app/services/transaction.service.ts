@@ -9,63 +9,55 @@ import { Observable } from 'rxjs';
 export class TransactionService {
 
   private baseUrl = `${API_BASE_URL}/api/transactions`;
+  // ✅ Create a separate base for the savings/pockets API
+  private savingsUrl = `${API_BASE_URL}/api/savings`;
 
   constructor(private http: HttpClient) {}
 
-  // ✅ Updated to include category
   transferMoney(data: { toAccountNumber: string; amount: number; category: string }) {
     return this.http.post(`${this.baseUrl}/transfer`, data);
   }
 
-  // ✅ New method for the Chart.js Analytics
   getSpendingStats(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/spending-stats`);
   }
 
-  // Transaction history
   getMyTransactions() {
     return this.http.get<any[]>(`${this.baseUrl}/my`);
   }
 
-  // Monthly report
   getMonthlyReport() {
     return this.http.get<any[]>(`${this.baseUrl}/monthly`);
   }
 
-  // Inside src/app/services/transaction.service.ts
+  addFundsViaUPI(amount: number, vpa: string, password: string) {
+    return this.http.post(`${this.baseUrl}/add-funds`, 
+      { amount, vpa, password }, 
+      { responseType: 'text' }
+    );
+  }
 
-addFundsViaUPI(amount: number, vpa: string, password: string) {
-  // ✅ Now accepting 3 parameters to match the Component call
-  return this.http.post(`${this.baseUrl}/add-funds`, 
-    { amount, vpa, password }, 
-    { responseType: 'text' } // Matches your Spring Boot String response
-  );
-}
+  // ✅ UPDATED: Fixed Localhost to Cloud URL
+  claimPocket(id: number) {
+    return this.http.delete(`${this.savingsUrl}/claim/${id}`);
+  }
 
-claimPocket(id: number) {
-  // Matches the @DeleteMapping("/claim/{id}") in your Controller
-  return this.http.delete(`http://localhost:8080/api/savings/claim/${id}`);
-}
-// Inside TransactionService
-// Inside transaction.service.ts
+  // ✅ UPDATED: Fixed Localhost to Cloud URL
+  getPockets() {
+    return this.http.get<any[]>(`${this.savingsUrl}/my-pockets`);
+  }
 
-// ✅ Use the base URL without '/transactions' if necessary, 
-// or just hardcode the correct path for these specific ones:
+  // ✅ UPDATED: Fixed Localhost to Cloud URL
+  createPocket(name: string, target: number) {
+    const body = {
+      goalName: name,
+      targetAmount: target
+    };
+    return this.http.post(`${this.savingsUrl}/create`, body);
+  }
 
-getPockets() {
-  // Make sure this matches your Spring Boot @RequestMapping("/api/savings")
-  return this.http.get<any[]>(`http://localhost:8080/api/savings/my-pockets`);
-}
-
-createPocket(name: string, target: number) {
-  const body = {
-    goalName: name,      // ✅ Must match payload.get("goalName") in Java
-    targetAmount: target // ✅ Must match payload.get("targetAmount") in Java
-  };
-  return this.http.post(`http://localhost:8080/api/savings/create`, body);
-}
-
-stashMoney(goalId: number, amount: number) {
-  return this.http.post(`http://localhost:8080/api/savings/stash?goalId=${goalId}&amount=${amount}`, {});
-}
+  // ✅ UPDATED: Fixed Localhost to Cloud URL
+  stashMoney(goalId: number, amount: number) {
+    return this.http.post(`${this.savingsUrl}/stash?goalId=${goalId}&amount=${amount}`, {});
+  }
 }

@@ -49,13 +49,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<MonthlyReportView> getMonthlyReport(@Param("accountId") Long accountId);
 
     @Query("""
-    SELECT t FROM Transaction t
-    WHERE (t.fromAccount.id = :accountId OR t.toAccount.id = :accountId)
-      AND MONTH(t.createdAt) = MONTH(CURRENT_DATE)
-      AND YEAR(t.createdAt) = YEAR(CURRENT_DATE)
+    SELECT t FROM Transaction t 
+    WHERE (t.fromAccount.id = :accountId OR t.toAccount.id = :accountId) 
+    ORDER BY t.createdAt DESC
 """)
-    List<Transaction> findMonthlyTransactions(@Param("accountId") Long accountId);
-
+List<Transaction> findMonthlyTransactions(@Param("accountId") Long accountId);
     // ✅ Add this to get the Spending Stats for the Chart
     @Query("""
         SELECT t.category, SUM(t.amount) 

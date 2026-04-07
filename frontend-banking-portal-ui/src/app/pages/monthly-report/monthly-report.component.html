@@ -78,19 +78,10 @@
             <td>{{ tx.createdAt | date:'mediumDate' }}</td>
             <td>₹ {{ tx.amount }}</td>
             <td>
-              <span
-            class="badge"
-             [ngClass]="
-              tx.fromAccount?.id === myAccountId
-               ? 'bg-danger'
-               : 'bg-success'
-                  ">
-                {{
-                 tx.fromAccount?.id === myAccountId
-                   ? 'DEBIT'
-                   : 'CREDIT'
-                 }}
-                </span>
+              <span class="badge"
+                [ngClass]="tx.fromAccount?.id === myAccountId ? 'bg-danger' : 'bg-success'">
+                {{ tx.fromAccount?.id === myAccountId ? 'DEBIT' : 'CREDIT' }}
+              </span>
 
             </td>
             <td>

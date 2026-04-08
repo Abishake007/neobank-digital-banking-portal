@@ -27,41 +27,41 @@ export class MonthlyReportComponent implements OnInit {
     private dashboardService: DashboardService
   ) {}
 
-  ngOnInit(): void {
-    this.loadMyAccount();
-  }
-
-  loadMyAccount() {
-  this.dashboardService.getMyAccount().subscribe({
-    next: (acc: any) => {
-      // Use the 'accessToken' logic we fixed in the interceptor
-      this.myAccountId = acc.id || acc.accountId;
-      this.balance = acc.balance;
-
-      if (this.myAccountId) {
-        console.log("✅ Identity Verified. Fetching transactions...");
-        this.loadMonthlyReport(); // ONLY fetch once we have the ID
-      }
-    },
-    error: () => this.error = "Identity check failed. Please re-login."
-  });
-}
-
-  loadMonthlyReport() {
+ 
+ loadMonthlyReport() {
   this.transactionService.getMonthlyReport().subscribe({
     next: (data: any[]) => {
-      console.log("📊 Raw Transaction Data:", data); // Check if this is []
-      this.reports = data;
+      // ✅ Sort by date (Newest First)
+      this.reports = data.sort((a, b) => {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+      
       this.calculateTotals();
     },
     error: (err) => {
-      console.error("Report Fetch Error:", err);
       this.error = 'Failed to load monthly report';
     }
   });
 }
 
- calculateTotals() {
+ngOnInit(): void {
+    this.loadMyAccount();
+  }
+
+    loadMyAccount() {
+  this.dashboardService.getMyAccount().subscribe({
+    next: (acc: any) => {
+      // Use accountNumber since 'id' is missing from the backend response
+      this.myAccountId = acc.accountNumber; 
+      this.balance = acc.balance;
+
+      console.log("Using Account Number for Math:", this.myAccountId);
+      this.loadMonthlyReport(); 
+    }
+  });
+}
+
+    calculateTotals() {
   this.totalCredit = 0;
   this.totalDebit = 0;
 
@@ -69,17 +69,11 @@ export class MonthlyReportComponent implements OnInit {
 
   this.reports.forEach((tx: any) => {
     const amount = Number(tx.amount);
-
-    // 1. If there is NO fromAccount, it's a Top-up/Add Funds (CREDIT)
-    if (!tx.fromAccount) {
-      this.totalCredit += amount;
-    } 
-    // 2. If I am the sender, money is leaving (DEBIT)
-    else if (tx.fromAccount.id == this.myAccountId) {
+    
+    // ✅ FIX: Compare against the dynamic variable this.myAccountId
+    if (tx.fromAccount && tx.fromAccount.accountNumber === this.myAccountId) {
       this.totalDebit += amount;
-    } 
-    // 3. Otherwise, someone sent money to me (CREDIT)
-    else {
+    } else {
       this.totalCredit += amount;
     }
   });

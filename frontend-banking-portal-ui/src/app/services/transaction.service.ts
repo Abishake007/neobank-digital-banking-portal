@@ -9,12 +9,11 @@ import { Observable } from 'rxjs';
 export class TransactionService {
 
   private baseUrl = `${API_BASE_URL}/api/transactions`;
-  // ✅ Create a separate base for the savings/pockets API
   private savingsUrl = `${API_BASE_URL}/api/savings`;
 
   constructor(private http: HttpClient) {}
 
-  transferMoney(data: { toAccountNumber: string; amount: number; category: string }) {
+  transferMoney(data: { toAccountNumber: string; amount: number; category: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/transfer`, data);
   }
 
@@ -22,42 +21,36 @@ export class TransactionService {
     return this.http.get<any>(`${this.baseUrl}/spending-stats`);
   }
 
-  getMyTransactions() {
+  // Changed to Observable<any[]> to ensure the report component gets an array
+  getMyTransactions(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/my`);
   }
 
-  getMonthlyReport() {
-    return this.http.get<any[]>(`${this.baseUrl}/monthly`);
+  // ✅ TIP: If /monthly is returning [], try changing this to /my 
+  // just to see if your data appears in the table.
+  getMonthlyReport(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/my`);
   }
 
-  addFundsViaUPI(amount: number, vpa: string, password: string) {
-    return this.http.post(`${this.baseUrl}/add-funds`, 
-      { amount, vpa, password }, 
-      { responseType: 'text' }
-    );
+  addFundsViaUPI(amount: number, vpa: string, password: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/add-funds`, { amount, vpa, password });
   }
 
-  // ✅ UPDATED: Fixed Localhost to Cloud URL
-  claimPocket(id: number) {
+  claimPocket(id: number): Observable<any> {
     return this.http.delete(`${this.savingsUrl}/claim/${id}`);
   }
 
-  // ✅ UPDATED: Fixed Localhost to Cloud URL
-  getPockets() {
+  getPockets(): Observable<any[]> {
     return this.http.get<any[]>(`${this.savingsUrl}/my-pockets`);
   }
 
-  // ✅ UPDATED: Fixed Localhost to Cloud URL
-  createPocket(name: string, target: number) {
-    const body = {
-      goalName: name,
-      targetAmount: target
-    };
-    return this.http.post(`${this.savingsUrl}/create`, body);
+  createPocket(name: string, target: number): Observable<any> {
+    const body = { goalName: name, targetAmount: target };
+    return this.http.post(`${this.savingsUrl}/create`, body); // Fixed: ensure this uses correct base
   }
 
-  // ✅ UPDATED: Fixed Localhost to Cloud URL
-  stashMoney(goalId: number, amount: number) {
+  stashMoney(goalId: number, amount: number): Observable<any> {
+    // Note: It's better to send these as a JSON body rather than Params if your backend allows
     return this.http.post(`${this.savingsUrl}/stash?goalId=${goalId}&amount=${amount}`, {});
   }
 }

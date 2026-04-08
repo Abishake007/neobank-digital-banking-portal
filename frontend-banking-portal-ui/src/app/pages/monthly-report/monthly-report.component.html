@@ -75,19 +75,18 @@
 
         <tbody>
           <tr *ngFor="let tx of reports">
-            <td>{{ tx.createdAt | date:'mediumDate' }}</td>
-            <td>₹ {{ tx.amount }}</td>
-            <td>
-              <span class="badge"
-                [ngClass]="tx.fromAccount?.id === myAccountId ? 'bg-danger' : 'bg-success'">
-                {{ tx.fromAccount?.id === myAccountId ? 'DEBIT' : 'CREDIT' }}
-              </span>
-
-            </td>
-            <td>
-              <span class="badge bg-success">{{ tx.status }}</span>
-            </td>
-          </tr>
+              <td>{{ tx.createdAt | date:'mediumDate' }}</td>
+              <td>₹ {{ tx.amount }}</td>
+              <td>
+                <span class="badge"
+                  [ngClass]="tx.fromAccount?.accountNumber === myAccountId ? 'bg-danger' : 'bg-success'">
+                  {{ !tx.fromAccount ? 'DEPOSIT' : (tx.fromAccount?.accountNumber === myAccountId ? 'DEBIT' : 'CREDIT') }}
+                </span>
+              </td>
+              <td>
+                <span class="badge bg-success">{{ tx.status }}</span>
+              </td>
+            </tr>
 
           <!-- Empty State -->
           <tr *ngIf="reports.length === 0 && !error">

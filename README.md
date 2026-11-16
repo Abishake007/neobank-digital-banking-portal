@@ -267,5 +267,5 @@ The NeoBank portal is currently live and available at:
 
 ## License
 
-This project is provided as-is for educational and commercial use.
+This project is provided as-is for educational use.
 

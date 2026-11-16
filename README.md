@@ -122,6 +122,29 @@ NeoBank is a simple and secure full-stack website that acts like a real-world di
    ```
 
 ---
+## Screenshots
+
+### Dashboard with Transaction Analytics and Virtual Pockets
+![Dashboard](analytics.png)
+
+### Admin Portal
+![Admin Page](admin.png)
+
+### Monthly Report
+![Monthly Transactions Report](monthlyreport.png)
+
+### Send Money
+![Send Money Transfer](sendmoney.png)
+
+### Transaction History
+![Transactions History](transhistory.png)
+
+### Deposit Money
+![Deposit Funds](inputfund.png)
+
+### Login Page
+![Login](login.png)
+
 
 ## API Documentation
 
@@ -164,29 +187,6 @@ NeoBank is a simple and secure full-stack website that acts like a real-world di
 
 
 ---
-## Screenshots
-
-### Dashboard with Transaction Analytics and Virtual Pockets
-![Dashboard](analytics.png)
-
-### Admin Portal
-![Admin Page](admin.png)
-
-### Monthly Report
-![Monthly Transactions Report](monthlyreport.png)
-
-### Send Money
-![Send Money Transfer](sendmoney.png)
-
-### Transaction History
-![Transactions History](transhistory.png)
-
-### Deposit Money
-![Deposit Funds](inputfund.png)
-
-### Login Page
-![Login](login.png)
-
 
 ## Future Enhancements
 

@@ -174,6 +174,10 @@ public class TransactionService {
 
     @Transactional
     public void stashMoney(String email, Long goalId, BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("Stash amount must be greater than zero");
+        }
+
         // 1. Get the account
         Account account = accountRepository.findByUser_Email(email)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
@@ -186,6 +190,10 @@ public class TransactionService {
         // 3. Get the pocket
         SavingsGoal goal = savingsGoalRepository.findById(goalId)
                 .orElseThrow(() -> new RuntimeException("Savings Goal not found"));
+
+        if (!goal.getAccount().getId().equals(account.getId())) {
+            throw new RuntimeException("Savings pocket does not belong to this account");
+        }
 
         // 4. Update the logic
         // We increase the 'lockedBalance' of the account

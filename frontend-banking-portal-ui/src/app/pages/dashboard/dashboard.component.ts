@@ -7,6 +7,9 @@ import { TransactionService } from '../../services/transaction.service';
 import { AuthService } from '../../services/auth.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartData, ChartType, registerables } from 'chart.js';
+import { AlertService } from '../../services/alert.service';
+
+declare const bootstrap: any;
 
 Chart.register(...registerables);
 
@@ -41,7 +44,7 @@ export class DashboardComponent implements OnInit {
     labels: [],
     datasets: [{ 
       data: [], 
-      backgroundColor: ['#dc3545', '#0d6efd', '#ffc107', '#198754', '#6f42c1'] 
+      backgroundColor: ['#353535', '#3C6E71', '#284B63', '#D9D9D9', '#3C6E71'] 
     }]
   };
 
@@ -57,7 +60,8 @@ export class DashboardComponent implements OnInit {
     private dashboardService: DashboardService,
     private transactionService: TransactionService,
     public authService: AuthService,
-    private router: Router
+    private router: Router,
+    private alerts: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -109,7 +113,7 @@ export class DashboardComponent implements OnInit {
           labels: labels,
           datasets: [{
             data: values as number[],
-            backgroundColor: ['#dc3545', '#0d6efd', '#ffc107', '#198754', '#6f42c1']
+            backgroundColor: ['#353535', '#3C6E71', '#284B63', '#D9D9D9', '#3C6E71']
           }]
         };
       },
@@ -152,13 +156,14 @@ export class DashboardComponent implements OnInit {
   this.transactionService.createPocket(this.newGoal.name, this.newGoal.target).subscribe({
     next: (res) => {
       console.log("Server Response:", res);
-      alert("Savings Pocket Created!");
+      this.alerts.show('Savings pocket created!', 'success');
+      this.closeModal('createGoalModal');
       this.newGoal = { name: '', target: 0 };
       this.loadPockets(); 
     },
     error: (err) => {
       console.error("Create Pocket Error:", err);
-      alert("Error: " + (err.error?.message || "Check console for details"));
+      this.alerts.show(err.error?.message || 'Could not create the savings pocket. Please try again.', 'error');
     }
   });
 }
@@ -169,37 +174,46 @@ export class DashboardComponent implements OnInit {
    */
  onStash() {
   if (this.stashData.amount <= 0) {
-    alert("Please enter a valid amount.");
+    this.alerts.show('Please enter a valid amount.', 'error');
     return;
   }
 
   this.transactionService.stashMoney(this.stashData.goalId, this.stashData.amount).subscribe({
     next: () => {
-      alert("Money stashed successfully!");
+      this.alerts.show('Money stashed successfully!', 'success');
+      this.closeModal('stashModal');
       
       // ✅ VERY IMPORTANT: Refresh everything
       this.loadDashboardData(); // Refreshes balance & pockets
       this.stashData.amount = 0; // Reset the input field
     },
     error: (err) => {
-      alert(err.error?.message || "Insufficient funds in your available balance!");
+      console.error('Stash request failed:', err);
+      const serverMessage = typeof err.error === 'string' ? err.error : err.error?.message;
+      this.alerts.show(serverMessage || `The server could not complete this stash (HTTP ${err.status || 'unknown'}). Please try again.`, 'error');
     }
   });
 }
 claimPocket(id: number) {
-  if (confirm("Goal reached! This will move the saved funds back to your main balance and close this pocket. Proceed?")) {
+  this.alerts.confirm('Goal reached! This will move the saved funds back to your main balance and close this pocket. Proceed?').then(accepted => {
+    if (!accepted) return;
     this.transactionService.claimPocket(id).subscribe({
       next: (res) => {
-        alert("Success! Funds released.");
+        this.alerts.show('Funds released successfully.', 'success');
         this.loadDashboardData(); // ✅ This refreshes the Balance and the Pockets list
       },
       error: (err) => {
         console.error(err);
-        alert("Error releasing funds. Please try again.");
+        this.alerts.show('Error releasing funds. Please try again.', 'error');
       }
     });
-  }
+  });
 }
+
+  private closeModal(id: string): void {
+    const element = document.getElementById(id);
+    if (element) bootstrap.Modal.getInstance(element)?.hide();
+  }
   // =========================
   // NAVIGATION & AUTH
   // =========================

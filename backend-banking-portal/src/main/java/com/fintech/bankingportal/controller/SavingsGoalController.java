@@ -64,7 +64,7 @@ public class SavingsGoalController {
     @PostMapping("/stash")
     public ResponseEntity<?> stash(@RequestParam Long goalId, @RequestParam BigDecimal amount, Authentication auth) {
         transactionService.stashMoney(auth.getName(), goalId, amount);
-        return ResponseEntity.ok("Money Stashed Successfully");
+        return ResponseEntity.ok(Map.of("message", "Money stashed successfully"));
     }
 
     // Inside SavingsGoalController.java

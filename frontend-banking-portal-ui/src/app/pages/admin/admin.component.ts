@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../services/admin.service';
 import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-admin',
@@ -25,7 +26,8 @@ export class AdminComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    public authService: AuthService
+    public authService: AuthService,
+    private alerts: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +53,7 @@ export class AdminComponent implements OnInit {
         this.newUser = { name:'', email:'', password:'', role:'USER' };
         this.loadUsers();
       },
-      error: err => alert(err.error || 'Failed to create user')
+      error: err => this.alerts.show(err.error?.message || err.error || 'Failed to create user', 'error')
     });
   }
 
@@ -59,20 +61,18 @@ export class AdminComponent implements OnInit {
 
     // ❌ Prevent admin disabling themselves
     if (user.email === this.authService.getUserEmail()) {
-      alert("You cannot disable your own account");
+      this.alerts.show('You cannot disable your own account.', 'error');
       return;
     }
 
     const action = user.enabled ? 'DISABLE' : 'ENABLE';
 
-    const confirmAction = confirm(
-      `Are you sure you want to ${action} this user?`
-    );
-
-    if (!confirmAction) return;
-
-    this.adminService
-      .updateUserStatus(user.id, !user.enabled)
-      .subscribe(() => this.loadUsers());
+    this.alerts.confirm(`Are you sure you want to ${action.toLowerCase()} this user?`).then(confirmed => {
+      if (!confirmed) return;
+      this.adminService.updateUserStatus(user.id, !user.enabled).subscribe({
+        next: () => this.loadUsers(),
+        error: () => this.alerts.show('Could not update this user. Please try again.', 'error')
+      });
+    });
   }
 }

@@ -12,26 +12,13 @@ import { MonthlyReportComponent } from './pages/monthly-report/monthly-report.co
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'send-money', component: SendMoneyComponent },
-  { path: 'add-funds', component: AddFundsComponent, 
-    canActivate: [authGuard] // Ensures only logged-in users can access it
-  },
-  { path: 'monthly-report', component: MonthlyReportComponent },
-  { path: 'transactions', component: TransactionHistoryComponent },
-  { path: 'admin/users', component:AdminComponent},
-
-  {
-    path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [authGuard]
-  },
-
-  {
-    path: 'admin',
-    component: AdminComponent,
-    canActivate: [authGuard, adminGuard]
-  },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'send-money', component: SendMoneyComponent, canActivate: [authGuard] },
+  { path: 'add-funds', component: AddFundsComponent, canActivate: [authGuard] },
+  { path: 'monthly-report', component: MonthlyReportComponent, canActivate: [authGuard] },
+  { path: 'transactions', component: TransactionHistoryComponent, canActivate: [authGuard] },
+  { path: 'admin/users', component: AdminComponent, canActivate: [authGuard, adminGuard] },
+  { path: 'admin', redirectTo: 'admin/users', pathMatch: 'full' },
 
   { path: '**', redirectTo: 'login' }
 ];

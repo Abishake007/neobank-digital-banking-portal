@@ -1,9 +1,9 @@
 /* ================= HERO ================= */
 .bank-hero {
   min-height: 100vh;
-  padding-top: 90px; /* space for fixed navbar */
+  padding-top: 90px; /* space for floating navbar */
   background:
-    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    linear-gradient(90deg, rgba(53, 53, 53, .56) 0%, rgba(40, 75, 99, .28) 58%, rgba(53, 53, 53, .14) 100%),
     url('/vecteezy_modern-bank-building-entrance_48587382.jpeg');
   background-size: cover;
   background-position: center;
@@ -48,8 +48,8 @@ canvas {
   height: 100% !important;
 }
 
-.bg-soft-primary { background-color: #e7f1ff; }
-.bg-soft-warning { background-color: #fff3cd; }
+.bg-soft-primary { background-color: rgba(60, 110, 113, .2); }
+.bg-soft-warning { background-color: #D9D9D9; }
 
 .icon-circle {
   width: 40px;
@@ -64,10 +64,33 @@ canvas {
 .card:hover {
   transform: translateY(-5px);
 }
+
+.balance-card {
+  border-radius: 20px;
+  min-height: 180px;
+  background: linear-gradient(135deg, #284B63 0%, #3C6E71 100%);
+  color: #FFFFFF !important;
+}
+
+.balance-card .bg-white.bg-opacity-10 {
+  background-color: rgba(217, 217, 217, .16) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, .16);
+}
+
+.balance-card .bg-white.bg-opacity-10 > * { color: #FFFFFF !important; }
+
+.pocket-card {
+  border-radius: 15px;
+  background: var(--card-bg);
+  border: 1px solid rgba(53, 53, 53, .12) !important;
+}
+
+.pocket-empty { border: 2px dashed var(--border-color) !important; }
 /* ================= FEATURES ================= */
 .features-section {
   padding: 80px 0;
-  background: #0c1d3b;
+  background: #3C6E71;
 }
 
 .features-section i {
@@ -93,8 +116,8 @@ canvas {
 /* ================= STATS ================= */
 .stats-section {
   padding: 60px 0;
-  background: #004c8f;
-  color: #ffffff;
+  background: #D9D9D9;
+  color: #353535;
 }
 
 .stats-section h2 {
@@ -105,7 +128,7 @@ canvas {
 .cta-section {
   padding: 80px 0;
   background:
-    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    linear-gradient(105deg, rgba(53, 53, 53, .62), rgba(40, 75, 99, .4)),
     url('/vecteezy_modern-bank-building-entrance_48587382.jpeg');
   background-size: cover;
   background-position: center;

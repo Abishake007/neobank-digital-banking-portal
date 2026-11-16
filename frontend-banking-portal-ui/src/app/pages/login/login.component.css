@@ -1,7 +1,7 @@
 /* Layout Wrapper */
 .bank-login-wrapper {
   min-height: 100vh;
-  background-color: #f4f7f9;
+  background-color: #D9D9D9;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +14,8 @@
   width: 100%;
   max-width: 950px;
   min-height: 580px;
-  background: #ffffff;
+  background: #FFFFFF;
+  box-shadow: 0 24px 64px rgba(53, 53, 53, .15);
   border-radius: 12px;
   overflow: hidden;
 }
@@ -22,7 +23,7 @@
 /* Left Sidebar */
 .bank-sidebar {
   flex: 1;
-  background-color: #002e5d; /* Dark Navy Corporate Blue */
+  background-color: #284B63;
   color: #ffffff;
   padding: 60px;
   display: flex;
@@ -33,7 +34,7 @@
 .divider-line {
   width: 40px;
   height: 3px;
-  background-color: #3b82f6;
+  background-color: #3C6E71;
 }
 
 .tracking-tight {
@@ -59,7 +60,7 @@
 .form-label-top {
   font-size: 11px;
   font-weight: 700;
-  color: #64748b;
+  color: #535353;
   letter-spacing: 0.5px;
   margin-bottom: 8px;
   display: block;
@@ -68,14 +69,14 @@
 .input-group-custom {
   display: flex;
   align-items: center;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #D9D9D9;
   border-radius: 6px;
   padding: 2px 12px;
   transition: border-color 0.2s;
 }
 
 .input-group-custom:focus-within {
-  border-color: #002e5d;
+  border-color: #3C6E71;
 }
 
 .input-icon {
@@ -94,7 +95,7 @@
 
 /* Corporate Button */
 .btn-bank-primary {
-  background-color: #002e5d;
+  background-color: #284B63;
   color: white;
   border: none;
   padding: 14px;
@@ -106,12 +107,12 @@
 }
 
 .btn-bank-primary:hover {
-  background-color: #001f3f;
+  background-color: #353535;
 }
 
 /* Dark Mode Overrides */
 body[data-theme="dark"] .bank-form-container {
-  background: #1e293b;
+  background: #284B63;
 }
 
 body[data-theme="dark"] .bank-form-container h3 {
@@ -119,8 +120,8 @@ body[data-theme="dark"] .bank-form-container h3 {
 }
 
 body[data-theme="dark"] .input-group-custom {
-  background: #0f172a;
-  border-color: #334155;
+  background: #353535;
+  border-color: #3C6E71;
 }
 
 body[data-theme="dark"] .form-input {

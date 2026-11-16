@@ -50,7 +50,10 @@ export class TransactionService {
   }
 
   stashMoney(goalId: number, amount: number): Observable<any> {
-    // Note: It's better to send these as a JSON body rather than Params if your backend allows
-    return this.http.post(`${this.savingsUrl}/stash?goalId=${goalId}&amount=${amount}`, {});
+    // The API has returned plain text in deployed versions; accept that response so
+    // Angular doesn't report a JSON parse error after the transaction has committed.
+    return this.http.post(`${this.savingsUrl}/stash?goalId=${goalId}&amount=${amount}`, {}, {
+      responseType: 'text'
+    });
   }
 }

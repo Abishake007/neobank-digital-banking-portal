@@ -16,3 +16,69 @@
 .loader-content {
   text-align: center;
 }
+
+.site-footer {
+  position: relative;
+  overflow: hidden;
+  margin-top: auto;
+  color: #FFFFFF;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(ellipse at 12% 0%, rgba(60, 110, 113, .25), transparent 42%),
+    linear-gradient(135deg, #353535 0%, #284B63 58%, #353535 100%);
+  border-top: 1px solid rgba(217, 217, 217, .25);
+}
+
+.footer-container {
+  position: relative;
+  z-index: 1;
+  padding-top: 3.25rem;
+  padding-bottom: 1.5rem;
+}
+
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .75rem;
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -.055em;
+  text-decoration: none;
+}
+
+.footer-brand-icon {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  background: linear-gradient(145deg, #3C6E71, #284B63);
+  border: 1px solid rgba(217, 217, 217, .28);
+  border-radius: .85rem;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .25);
+}
+
+.footer-brand-icon svg { width: 1.75rem; height: 1.75rem; overflow: visible; }
+.brand-shield { fill: none; stroke: rgba(217, 217, 217, .7); stroke-width: 1.35; stroke-linejoin: round; }
+.brand-n { fill: none; stroke: #fff; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+.footer-wordmark { text-transform: lowercase; }
+.footer-wordmark > span:first-child { color: #fff; }
+.footer-wordmark-accent { color: #3C6E71; }
+
+.footer-description { max-width: 350px; color: #D9D9D9; font-size: .95rem; line-height: 1.7; }
+.footer-heading { margin: .25rem 0 1rem; color: #fff; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.footer-links { display: flex; flex-direction: column; align-items: flex-start; gap: .75rem; }
+.footer-links a { color: #D9D9D9; font-size: .92rem; font-weight: 500; text-decoration: none; transition: color .15s ease, transform .15s ease; }
+.footer-links a:hover, .footer-bottom a:hover { color: #fff; transform: translateX(3px); }
+.footer-contact a { display: flex; align-items: center; gap: .65rem; color: #FFFFFF; }
+.footer-contact i { width: 1.1rem; flex: 0 0 1.1rem; color: #3C6E71; }
+.footer-contact span { min-width: 0; overflow-wrap: anywhere; }
+.footer-contact a:hover { color: #fff; }
+.footer-bottom { border-top: 1px solid rgba(217, 217, 217, .2); color: #D9D9D9; font-size: .82rem; }
+.footer-bottom a { color: #D9D9D9; text-decoration: none; transition: color .15s ease, transform .15s ease; }
+
+@media (max-width: 575.98px) {
+  .footer-container { padding-top: 2.5rem; }
+  .footer-heading { font-size: .67rem; letter-spacing: .08em; }
+  .footer-links a { font-size: .88rem; }
+}

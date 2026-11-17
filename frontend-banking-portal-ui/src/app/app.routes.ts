@@ -14,6 +14,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
   { path: 'send-money', component: SendMoneyComponent, canActivate: [authGuard] },
+  { path: 'investments', loadComponent: () => import('./pages/investments/investments.component').then(m => m.InvestmentsComponent), canActivate: [authGuard] },
   { path: 'add-funds', component: AddFundsComponent, canActivate: [authGuard] },
   { path: 'monthly-report', component: MonthlyReportComponent, canActivate: [authGuard] },
   { path: 'transactions', component: TransactionHistoryComponent, canActivate: [authGuard] },

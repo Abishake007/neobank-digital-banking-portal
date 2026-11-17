@@ -3,6 +3,18 @@
   padding-bottom: 40px;
 }
 
+app-root {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+app-root > router-outlet + * {
+  display: block;
+  width: 100%;
+  flex: 1 0 auto;
+}
+
 /* =======================
     FINAL LOADING OVERLAY
 ======================= */

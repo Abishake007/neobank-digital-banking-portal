@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -23,10 +24,12 @@ public class AccountController {
     }
 
     @GetMapping("/my")
+    @Transactional(readOnly = true)
     public ResponseEntity<?> getMyAccount(Authentication authentication) {
         Account account = accountService.getAccountByUserEmail(authentication.getName());
 
         Map<String, Object> response = new HashMap<>();
+        response.put("accountHolderName", account.getUser().getName());
         response.put("accountNumber", account.getAccountNumber());
 
         // Total Money (The ₹82,000)

@@ -9,7 +9,8 @@ import { API_BASE_URL } from '../../api.config';
   selector: 'app-send-money',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './send-money.component.html'
+  templateUrl: './send-money.component.html',
+  styleUrl: './send-money.component.css'
 })
 export class SendMoneyComponent implements OnInit {
 

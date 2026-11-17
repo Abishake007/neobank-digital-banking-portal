@@ -54,7 +54,7 @@
             <th>Email</th>
             <th>Status</th>
             <th>Role</th>
-            <th class="text-center">Action</th>
+            <th class="text-center">Actions</th>
           </tr>
         </thead>
 
@@ -79,6 +79,9 @@
             </td>
 
             <td class="text-center">
+              <button class="btn btn-sm btn-outline-primary me-2" (click)="viewDetails(user)">
+                <i class="bi bi-eye me-1"></i>Details
+              </button>
               <button
                 class="btn btn-sm"
                 [ngClass]="user.enabled ? 'btn-outline-danger' : 'btn-outline-success'"
@@ -101,4 +104,80 @@
   </div>
 
 </div>
+</div>
+
+<div class="details-backdrop" *ngIf="detailsLoading || detailsError || selectedUser" (click)="closeDetails()">
+  <section class="details-panel card shadow-lg" role="dialog" aria-modal="true"
+    aria-label="User account and transaction details" (click)="$event.stopPropagation()">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0 fw-bold">User details</h5>
+      <button class="btn-close" aria-label="Close" (click)="closeDetails()"></button>
+    </div>
+    <div class="card-body" *ngIf="detailsLoading">
+      <div class="text-center text-muted py-5"><span class="spinner-border spinner-border-sm me-2"></span>Loading details…</div>
+    </div>
+    <div class="card-body" *ngIf="detailsError"><div class="alert alert-danger mb-0">{{ detailsError }}</div></div>
+    <div class="card-body" *ngIf="selectedUser as details">
+      <h6 class="fw-bold mb-3">{{ details.name }}</h6>
+      <div class="user-summary mb-4">
+        <div><span>Email</span><strong>{{ details.email }}</strong></div>
+        <div><span>User ID</span><strong>{{ details.id }}</strong></div>
+        <div><span>Role</span><strong>{{ details.role }}</strong></div>
+        <div><span>Status</span><strong>{{ details.enabled ? 'Enabled' : 'Disabled' }}</strong></div>
+      </div>
+      <h6 class="fw-bold">Accounts <span class="text-muted fw-normal">({{ details.accounts.length }})</span></h6>
+      <div class="table-responsive mb-4">
+        <table class="table table-sm table-bordered align-middle">
+          <thead class="table-light"><tr><th>Account</th><th>Type</th><th>Balance</th><th>Locked</th><th>Available</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let account of details.accounts">
+              <td>{{ account.accountNumber }}</td><td>{{ account.accountType }}</td>
+              <td>{{ account.balance | currency:'INR':'symbol':'1.2-2' }}</td>
+              <td>{{ account.lockedBalance | currency:'INR':'symbol':'1.2-2' }}</td>
+              <td>{{ account.availableBalance | currency:'INR':'symbol':'1.2-2' }}</td>
+            </tr>
+            <tr *ngIf="details.accounts.length === 0"><td colspan="5" class="text-center text-muted">No accounts found</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-2">
+        <h6 class="fw-bold mb-0">Transactions <span class="text-muted fw-normal">({{ filteredTransactions.length }} of {{ details.transactions.length }})</span></h6>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-outline-secondary" type="button" (click)="clearTransactionDates()"
+            [disabled]="!transactionFromDate && !transactionToDate">Clear dates</button>
+          <button class="btn btn-sm btn-primary" type="button" (click)="downloadUserStatement()"
+            [disabled]="filteredTransactions.length === 0">
+            <i class="bi bi-download me-1"></i>Download PDF
+          </button>
+        </div>
+      </div>
+      <div class="row g-2 mb-3">
+        <div class="col-sm-5 col-md-4">
+          <label class="form-label small mb-1" for="transaction-from-date">From date</label>
+          <input id="transaction-from-date" class="form-control form-control-sm" type="date"
+            [(ngModel)]="transactionFromDate" [max]="transactionToDate || null">
+        </div>
+        <div class="col-sm-5 col-md-4">
+          <label class="form-label small mb-1" for="transaction-to-date">To date</label>
+          <input id="transaction-to-date" class="form-control form-control-sm" type="date"
+            [(ngModel)]="transactionToDate" [min]="transactionFromDate || null">
+        </div>
+      </div>
+      <div class="table-responsive transaction-table">
+        <table class="table table-sm table-hover align-middle">
+          <thead class="table-light"><tr><th>Date</th><th>From</th><th>To</th><th>Amount</th><th>Category</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr *ngFor="let transaction of filteredTransactions">
+              <td>{{ transaction.createdAt | date:'medium' }}</td>
+              <td>{{ transaction.fromUserName || 'External' }}<small class="d-block text-muted">{{ transaction.fromAccountNumber || '—' }}</small></td>
+              <td>{{ transaction.toUserName || 'External' }}<small class="d-block text-muted">{{ transaction.toAccountNumber || '—' }}</small></td>
+              <td>{{ transaction.amount | currency:'INR':'symbol':'1.2-2' }}</td>
+              <td>{{ transaction.category || '—' }}</td><td>{{ transaction.status }}</td>
+            </tr>
+            <tr *ngIf="filteredTransactions.length === 0"><td colspan="6" class="text-center text-muted py-3">No transactions found for this date range</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 </div>

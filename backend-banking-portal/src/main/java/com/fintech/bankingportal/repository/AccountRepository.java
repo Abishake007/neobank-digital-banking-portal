@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import jakarta.persistence.LockModeType;
 import java.util.Optional;
+import java.util.List;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
 
@@ -16,6 +17,8 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     // ✅ Add this to find Account via User's Email
     Optional<Account> findByUser_Email(String email);
+
+    List<Account> findAllByUser_Id(Long userId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT a FROM Account a WHERE a.id = :id")

@@ -18,7 +18,7 @@ export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
         Authorization: `Bearer ${token}`
       }
     });
-    console.log("🔑 Security Handshake: Token attached to", req.url);
+    //console.log("🔑 Security Handshake: Token attached to", req.url);
   } else {
     console.warn("⚠️ No accessToken found! Backend will reject this request.");
   }

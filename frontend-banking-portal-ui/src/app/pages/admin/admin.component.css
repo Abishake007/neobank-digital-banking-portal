@@ -1,3 +1,63 @@
 table th, table td {
   vertical-align: middle;
 }
+
+.details-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(15, 23, 42, .45);
+}
+
+.details-panel {
+  width: min(1000px, 100%);
+  max-height: min(88vh, 900px);
+  overflow: auto;
+  border: 1px solid rgba(15, 23, 42, .12);
+  border-radius: 16px;
+}
+
+.details-panel .card-header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fff;
+}
+
+.user-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.user-summary div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow-wrap: anywhere;
+}
+
+.user-summary span {
+  color: #6c757d;
+  font-size: .8rem;
+}
+
+.transaction-table {
+  max-height: 40vh;
+  overflow: auto;
+}
+
+@media (max-width: 576px) {
+  .details-backdrop {
+    padding: 10px;
+  }
+
+  .details-panel {
+    max-height: 94vh;
+    border-radius: 12px;
+  }
+}

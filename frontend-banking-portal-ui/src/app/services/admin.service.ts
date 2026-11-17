@@ -14,6 +14,10 @@ export class AdminService {
     return this.http.get<any[]>(`${this.baseUrl}/users`);
   }
 
+  getUserDetails(id: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/users/${id}/details`);
+  }
+
   createUser(user: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/users`, user);
   }

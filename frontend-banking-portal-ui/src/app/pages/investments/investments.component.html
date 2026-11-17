@@ -1,0 +1,196 @@
+<main class="page-content investment-page">
+  <div class="container">
+    <header class="investment-heading mb-4">
+      <div>
+        <span class="eyebrow">SAVE WITH A PLAN</span>
+        <h1>Investments</h1>
+        <p>Build your savings with simulated Fixed and Recurring Deposits.</p>
+      </div>
+      <div class="available-card">
+        <span>Available balance</span>
+        <strong>{{ availableBalance | currency:'INR':'symbol':'1.2-2' }}</strong>
+      </div>
+    </header>
+
+    <div class="simulation-note"><i class="bi bi-info-circle-fill"></i>
+      Demo products with simulated rates. These are projections for this app, not live bank offers.
+    </div>
+
+    <section class="calculator-card mb-4">
+      <div class="calculator-intro">
+        <span class="eyebrow">PLAN BEFORE YOU DEPOSIT</span>
+        <h2>Investment calculator</h2>
+        <p>Try different amounts and terms. Calculating here never moves money from your account.</p>
+      </div>
+      <div class="calculator-controls">
+        <div class="calc-type-switch" aria-label="Calculator investment type">
+          <button type="button" [class.active]="calculatorType === 'FD'" (click)="setCalculatorProduct('FD')">Fixed Deposit</button>
+          <button type="button" [class.active]="calculatorType === 'RD'" (click)="setCalculatorProduct('RD')">Recurring Deposit</button>
+        </div>
+        <label class="form-label small fw-semibold">{{ calculatorType === 'FD' ? 'One-time deposit' : 'Monthly installment' }} (INR)</label>
+        <input class="form-control mb-3" type="number" min="{{ calculatorType === 'FD' ? 1000 : 500 }}" step="100"
+          [(ngModel)]="calculatorAmount" [placeholder]="calculatorType === 'FD' ? 'Minimum 1,000' : 'Minimum 500'">
+        <label class="form-label small fw-semibold">Term</label>
+        <select class="form-select" [(ngModel)]="calculatorTermMonths">
+          <option *ngFor="let term of calculatorTerms" [ngValue]="term">{{ term }} months</option>
+        </select>
+      </div>
+      <div class="calculator-result">
+        <span>Estimated maturity value</span>
+        <strong>{{ calculatorMaturity | currency:'INR':'symbol':'1.2-2' }}</strong>
+        <small>{{ calculatorRate | number:'1.2-2' }}% simulated annual rate · {{ calculatorTermMonths }} months</small>
+        <small *ngIf="calculatorType === 'RD' && calculatorAmount">Total deposits: {{ calculatorAmount * calculatorTermMonths | currency:'INR':'symbol':'1.2-2' }}</small>
+      </div>
+    </section>
+
+    <div class="row g-4 align-items-stretch">
+      <div class="col-lg-5">
+        <section class="card investment-form h-100">
+          <div class="card-body p-4 p-xl-5">
+            <h2 class="h4 fw-bold mb-1">Start saving</h2>
+            <p class="text-muted mb-4">Choose a deposit that fits your plans.</p>
+            <div class="product-switch mb-4" role="tablist" aria-label="Investment type">
+              <button type="button" [class.active]="productType === 'FD'" (click)="setProduct('FD')">
+                <i class="bi bi-lock-fill"></i><span>Fixed Deposit</span>
+              </button>
+              <button type="button" [class.active]="productType === 'RD'" (click)="setProduct('RD')">
+                <i class="bi bi-calendar-check-fill"></i><span>Recurring Deposit</span>
+              </button>
+            </div>
+
+            <div class="product-explainer mb-4">
+              <strong>{{ productType === 'FD' ? 'One-time deposit' : 'Monthly savings' }}</strong>
+              <span>{{ productType === 'FD' ? 'Set aside a lump sum until its maturity date.' : 'Pay your first installment now, then one installment each month.' }}</span>
+            </div>
+
+            <label class="form-label fw-semibold">{{ productType === 'FD' ? 'Deposit amount' : 'Monthly installment' }} (INR)</label>
+            <div class="input-group mb-3">
+              <span class="input-group-text">₹</span>
+              <input class="form-control" type="number" min="{{ productType === 'FD' ? 1000 : 500 }}" step="100"
+                [(ngModel)]="amount" [placeholder]="productType === 'FD' ? 'Minimum 1,000' : 'Minimum 500'">
+            </div>
+            <small class="form-text d-block mb-3">Minimum {{ productType === 'FD' ? 'deposit' : 'installment' }}: {{ (productType === 'FD' ? 1000 : 500) | currency:'INR':'symbol':'1.0-0' }}</small>
+
+            <label class="form-label fw-semibold" for="investment-term">Term</label>
+            <select id="investment-term" class="form-select mb-3" [(ngModel)]="termMonths">
+              <option *ngFor="let term of terms" [ngValue]="term">{{ term }} months</option>
+            </select>
+
+            <div class="rate-summary mb-4">
+              <div><span>Simulated annual rate</span><strong>{{ annualRate | number:'1.2-2' }}%</strong></div>
+              <div><span>Estimated maturity value</span><strong>{{ estimatedMaturity | currency:'INR':'symbol':'1.2-2' }}</strong></div>
+            </div>
+            <button class="btn btn-primary w-100 py-2" type="button" (click)="openInvestment()"
+              [disabled]="saving || !amount || amount < (productType === 'FD' ? 1000 : 500) || amount > availableBalance">
+              <span *ngIf="saving" class="spinner-border spinner-border-sm me-2"></span>
+              {{ saving ? 'Opening…' : productType === 'FD' ? 'Open Fixed Deposit' : 'Start Recurring Deposit' }}
+            </button>
+            <p class="small text-muted mt-3 mb-0">Opening a deposit sets the amount aside from your available balance. You can claim proceeds on the maturity date.</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="col-lg-7">
+        <section class="investments-list h-100">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <div><h2 class="h4 fw-bold mb-1">Your deposits</h2><p class="text-muted mb-0">Track contributions and maturity dates.</p></div>
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn btn-sm btn-outline-primary" type="button" (click)="downloadStatement()" [disabled]="investments.length === 0">
+                <i class="bi bi-download me-1"></i>Download PDF
+              </button>
+              <span class="count-badge">{{ investments.length }}</span>
+            </div>
+          </div>
+          <div *ngIf="loading" class="card p-5 text-center text-muted"><span class="spinner-border spinner-border-sm me-2"></span>Loading investments…</div>
+          <div *ngIf="!loading && investments.length === 0" class="empty-state">
+            <i class="bi bi-piggy-bank"></i><h3>No deposits yet</h3><p>Choose an FD or RD to begin building your investment history.</p>
+          </div>
+          <article class="investment-card card mb-3" *ngFor="let investment of investments">
+            <div class="card-body p-4">
+              <div class="d-flex justify-content-between align-items-start gap-3">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="product-icon" [class.rd-icon]="investment.productType === 'RD'"><i class="bi" [ngClass]="investment.productType === 'FD' ? 'bi-lock-fill' : 'bi-calendar-check-fill'"></i></div>
+                  <div><h3 class="h5 fw-bold mb-1">{{ investment.productType === 'FD' ? 'Fixed Deposit' : 'Recurring Deposit' }}</h3><span class="text-muted small">{{ investment.termMonths }} month term · {{ investment.annualRate | number:'1.2-2' }}% p.a.</span></div>
+                </div>
+                <span class="status-badge" [class.matured]="investment.status === 'MATURED'">{{ investment.status === 'ACTIVE' ? 'Active' : 'Matured' }}</span>
+              </div>
+              <div class="deposit-values mt-4">
+                <div><span>{{ investment.productType === 'FD' ? 'Principal' : 'Monthly installment' }}</span><strong>{{ investment.amount | currency:'INR':'symbol':'1.2-2' }}</strong></div>
+                <div *ngIf="investment.productType === 'RD'"><span>Installments paid</span><strong>{{ investment.paidInstallments }} / {{ investment.termMonths }}</strong></div>
+                <div><span>Current value</span><strong>{{ currentValue(investment) | currency:'INR':'symbol':'1.2-2' }}</strong></div>
+                <div><span>Est. maturity value</span><strong>{{ investment.estimatedMaturityValue | currency:'INR':'symbol':'1.2-2' }}</strong></div>
+                <div><span>Maturity date</span><strong>{{ investment.maturityDate | date:'mediumDate' }}</strong></div>
+              </div>
+              <div class="progress mt-3" *ngIf="investment.productType === 'RD'"><div class="progress-bar" [style.width.%]="progress(investment)"></div></div>
+              <div class="d-flex flex-wrap gap-2 mt-4" *ngIf="investment.status === 'ACTIVE'">
+                <button class="btn btn-sm btn-outline-primary" *ngIf="investment.productType === 'RD'" (click)="beginSecureAction(investment, 'INSTALLMENT')" [disabled]="!canPay(investment)">
+                  <i class="bi bi-plus-circle me-1"></i>{{ canPay(investment) ? 'Pay monthly installment' : 'Next installment due next month' }}
+                </button>
+                <button class="btn btn-sm btn-success" *ngIf="canMature(investment)" (click)="beginSecureAction(investment, 'MATURE')">Claim maturity</button>
+              </div>
+            </div>
+          </article>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="confirm-backdrop" *ngIf="showConfirmation" (click)="closeConfirmation()">
+  <section class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-investment-title" (click)="$event.stopPropagation()">
+    <header class="confirm-header">
+      <div class="confirm-icon"><i class="bi bi-shield-check"></i></div>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeConfirmation()"></button>
+    </header>
+    <h2 id="confirm-investment-title">Review your deposit</h2>
+    <p class="text-muted">Please review the details before any funds are set aside.</p>
+    <div class="confirm-summary">
+      <div><span>Product</span><strong>{{ productType === 'FD' ? 'Fixed Deposit' : 'Recurring Deposit' }}</strong></div>
+      <div><span>{{ productType === 'FD' ? 'Deposit' : 'Monthly installment' }}</span><strong>{{ amount | currency:'INR':'symbol':'1.2-2' }}</strong></div>
+      <div><span>Term and rate</span><strong>{{ termMonths }} months · {{ annualRate | number:'1.2-2' }}% p.a.</strong></div>
+      <div><span>Estimated maturity value</span><strong>{{ estimatedMaturity | currency:'INR':'symbol':'1.2-2' }}</strong></div>
+    </div>
+    <div class="terms-box">
+      <h3>Key terms</h3>
+      <ul>
+        <li>This is a simulated product for demonstration; the displayed rate and projected return are not a live offer or guaranteed return.</li>
+        <li>The {{ productType === 'FD' ? 'deposit' : 'first installment' }} will be reserved from your available balance when you confirm.</li>
+        <li>{{ productType === 'FD' ? 'The FD principal remains reserved until its maturity date.' : 'RD installments are due monthly; missed installments are not automatically collected.' }}</li>
+        <li>At maturity, claim the simulated proceeds to return them to your available account balance.</li>
+      </ul>
+    </div>
+    <label class="acknowledgement"><input type="checkbox" [(ngModel)]="acceptedTerms"><span>I have read and accept these simulated deposit terms.</span></label>
+    <label class="acknowledgement"><input type="checkbox" [(ngModel)]="acknowledgedSimulation"><span>I understand this is a demo and not a real bank investment.</span></label>
+    <label class="form-label fw-semibold mt-3" for="investment-password">Confirm with your NeoBank password</label>
+    <input id="investment-password" class="form-control" type="password" [(ngModel)]="investmentPassword" autocomplete="current-password" placeholder="Enter your password">
+    <div class="confirm-actions">
+      <button type="button" class="btn btn-outline-secondary" (click)="closeConfirmation()" [disabled]="saving">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="confirmInvestment()" [disabled]="saving || !acceptedTerms || !acknowledgedSimulation || !investmentPassword">
+        <span *ngIf="saving" class="spinner-border spinner-border-sm me-2"></span>{{ saving ? 'Opening…' : 'Accept and open deposit' }}
+      </button>
+    </div>
+  </section>
+</div>
+
+<div class="confirm-backdrop" *ngIf="showActionConfirmation" (click)="closeActionConfirmation()">
+  <section class="confirm-dialog action-dialog" role="dialog" aria-modal="true" aria-labelledby="secure-action-title" (click)="$event.stopPropagation()">
+    <header class="confirm-header">
+      <div class="confirm-icon"><i class="bi bi-shield-lock"></i></div>
+      <button type="button" class="btn-close" aria-label="Close" (click)="closeActionConfirmation()"></button>
+    </header>
+    <h2 id="secure-action-title">{{ pendingAction === 'INSTALLMENT' ? 'Confirm RD installment' : 'Confirm maturity payout' }}</h2>
+    <p class="text-muted" *ngIf="pendingInvestment">
+      {{ pendingAction === 'INSTALLMENT' ? 'A monthly installment of' : 'The maturity proceeds for' }}
+      <strong>{{ pendingInvestment.amount | currency:'INR':'symbol':'1.2-2' }}</strong>
+      {{ pendingAction === 'INSTALLMENT' ? 'will be set aside from your available balance.' : 'will be credited to your available balance.' }}
+    </p>
+    <label class="form-label fw-semibold" for="action-password">Enter your NeoBank password</label>
+    <input id="action-password" class="form-control" type="password" [(ngModel)]="actionPassword" autocomplete="current-password" placeholder="Enter your password">
+    <div class="confirm-actions">
+      <button type="button" class="btn btn-outline-secondary" (click)="closeActionConfirmation()" [disabled]="saving">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="confirmSecureAction()" [disabled]="saving || !actionPassword">
+        <span *ngIf="saving" class="spinner-border spinner-border-sm me-2"></span>{{ pendingAction === 'INSTALLMENT' ? 'Confirm installment' : 'Confirm maturity payout' }}
+      </button>
+    </div>
+  </section>
+</div>

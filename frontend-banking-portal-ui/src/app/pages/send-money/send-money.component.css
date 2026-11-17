@@ -1,0 +1,9 @@
+.send-money-page {
+  padding-top: 128px;
+}
+
+@media (max-width: 575.98px) {
+  .send-money-page {
+    padding-top: 116px;
+  }
+}

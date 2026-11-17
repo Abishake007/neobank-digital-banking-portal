@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TransactionService } from '../../services/transaction.service';
+import { PdfStatementService } from '../../services/pdf-statement.service';
 
 @Component({
   selector: 'app-transaction-history',
@@ -13,7 +14,7 @@ export class TransactionHistoryComponent implements OnInit {
   transactions: any[] = [];
   // accountId = 1; // ❌ Removed: Not needed for JWT-based requests
 
-  constructor(private transactionService: TransactionService) {}
+  constructor(private transactionService: TransactionService, private pdfStatement: PdfStatementService) {}
 
   ngOnInit(): void {
     this.loadTransactions();
@@ -29,5 +30,19 @@ export class TransactionHistoryComponent implements OnInit {
         console.error('Error fetching transaction history:', err);
       }
     });
+  }
+
+  downloadStatement(): void {
+    const rows = this.transactions.map(tx => [
+      tx.createdAt ? new Date(tx.createdAt).toLocaleString() : '-',
+      tx.fromAccount?.accountNumber || 'External',
+      tx.toAccount?.accountNumber || 'External',
+      String(tx.category || 'OTHERS'),
+      String(tx.amount ?? ''),
+      String(tx.status || '')
+    ]);
+    this.pdfStatement.download('Transaction Statement',
+      ['Date', 'From account', 'To account', 'Category', 'Amount (INR)', 'Status'],
+      rows, 'my-transaction-statement.pdf');
   }
 }

@@ -1,0 +1,75 @@
+.investment-page {
+  padding-top: 126px;
+  padding-bottom: 56px;
+  background: #f5f7fa;
+}
+
+.investment-heading { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; }
+.investment-heading h1 { margin: .3rem 0; color: #1d2d44; font-weight: 800; }
+.investment-heading p { margin: 0; color: #667085; }
+.eyebrow { color: #3c6e71; font-size: .72rem; font-weight: 800; letter-spacing: .15em; }
+.available-card { display: flex; flex-direction: column; min-width: 215px; padding: 1rem 1.25rem; color: #fff; background: linear-gradient(135deg,#1d2d44,#3c6e71); border-radius: 14px; box-shadow: 0 10px 25px rgba(29,45,68,.14); }
+.available-card span { color: rgba(255,255,255,.78); font-size: .82rem; }
+.available-card strong { margin-top: .25rem; font-size: 1.35rem; }
+.simulation-note { display: flex; align-items: center; gap: .65rem; margin-bottom: 1.5rem; padding: .85rem 1rem; color: #284b63; background: #e9f1f2; border: 1px solid #d1e2e4; border-radius: 10px; font-size: .9rem; }
+.calculator-card { display: grid; grid-template-columns: 1fr 1.1fr .8fr; align-items: center; gap: 2rem; padding: 1.5rem 1.75rem; background: #fff; border: 1px solid #e1e8ed; border-radius: 16px; box-shadow: 0 8px 24px rgba(29,45,68,.05); }
+.calculator-intro h2 { margin: .3rem 0; color: #1d2d44; font-size: 1.3rem; font-weight: 800; }
+.calculator-intro p { margin: 0; color: #667085; font-size: .88rem; line-height: 1.5; }
+.calculator-controls { display: grid; grid-template-columns: 1fr; }
+.calc-type-switch { display: flex; gap: .4rem; margin-bottom: .8rem; padding: .25rem; background: #f1f4f6; border-radius: 9px; }
+.calc-type-switch button { flex: 1; padding: .45rem .3rem; color: #667085; background: transparent; border: 0; border-radius: 7px; font-size: .75rem; font-weight: 650; }
+.calc-type-switch button.active { color: #1d2d44; background: #fff; box-shadow: 0 1px 5px rgba(29,45,68,.1); }
+.calculator-result { display: flex; flex-direction: column; gap: .25rem; padding: 1rem; background: #edf5f2; border-radius: 12px; }
+.calculator-result span, .calculator-result small { color: #557069; font-size: .78rem; }
+.calculator-result strong { color: #1d5a45; font-size: 1.35rem; }
+.confirm-backdrop { position: fixed; inset: 0; z-index: 1100; display: grid; place-items: center; padding: 1rem; background: rgba(19,32,47,.62); backdrop-filter: blur(4px); }
+.confirm-dialog { width: min(100%, 560px); max-height: 92vh; overflow-y: auto; padding: 1.5rem; background: #fff; border: 1px solid rgba(255,255,255,.5); border-radius: 18px; box-shadow: 0 24px 70px rgba(13,24,38,.3); }
+.confirm-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; }
+.confirm-icon { display: grid; width: 2.8rem; height: 2.8rem; place-items: center; color: #fff; background: #284b63; border-radius: 12px; font-size: 1.25rem; }
+.confirm-dialog h2 { color: #1d2d44; font-size: 1.35rem; font-weight: 800; }
+.confirm-dialog > p { font-size: .9rem; }
+.confirm-summary { display: grid; gap: .65rem; margin: 1.1rem 0; padding: 1rem; background: #f5f7f9; border-radius: 12px; }
+.confirm-summary div { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.confirm-summary span { color: #667085; font-size: .85rem; }
+.confirm-summary strong { color: #1d2d44; font-size: .88rem; text-align: right; }
+.terms-box { padding: .9rem 1rem; background: #f8fafb; border: 1px solid #e4e9ef; border-radius: 10px; }
+.terms-box h3 { margin: 0 0 .5rem; color: #284b63; font-size: .9rem; font-weight: 750; }
+.terms-box ul { margin: 0; padding-left: 1.1rem; color: #596579; font-size: .78rem; line-height: 1.5; }
+.terms-box li + li { margin-top: .3rem; }
+.acknowledgement { display: flex; align-items: flex-start; gap: .6rem; margin-top: .85rem; color: #344054; font-size: .83rem; line-height: 1.4; }
+.acknowledgement input { width: 1rem; height: 1rem; flex: 0 0 1rem; margin-top: .1rem; accent-color: #284b63; }
+.confirm-actions { display: flex; justify-content: flex-end; gap: .65rem; margin-top: 1.25rem; }
+.investment-form, .investment-card { border: 1px solid #e4e9ef; border-radius: 16px; box-shadow: 0 8px 24px rgba(29,45,68,.06); }
+.product-switch { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: .35rem; background: #f0f3f6; border-radius: 12px; }
+.product-switch button { display: flex; flex-direction: column; align-items: center; gap: .35rem; padding: .8rem .45rem; color: #667085; background: transparent; border: 0; border-radius: 9px; font-size: .85rem; font-weight: 650; }
+.product-switch button i { font-size: 1.15rem; }
+.product-switch button.active { color: #1d2d44; background: #fff; box-shadow: 0 2px 8px rgba(29,45,68,.1); }
+.product-explainer { display: flex; flex-direction: column; gap: .2rem; padding-left: .85rem; border-left: 3px solid #3c6e71; }
+.product-explainer span, .form-text { color: #667085; font-size: .82rem; }
+.rate-summary { display: grid; gap: .65rem; padding: 1rem; background: #f6f8fa; border-radius: 10px; }
+.rate-summary div, .deposit-values div { display: flex; justify-content: space-between; gap: .75rem; }
+.rate-summary span, .deposit-values span { color: #667085; font-size: .84rem; }
+.rate-summary strong { color: #1d2d44; }
+.count-badge { display: grid; width: 2rem; height: 2rem; place-items: center; color: #284b63; background: #e9f1f2; border-radius: 50%; font-weight: 700; }
+.empty-state { padding: 3rem 1.5rem; text-align: center; background: #fff; border: 1px dashed #cbd5df; border-radius: 16px; }
+.empty-state > i { color: #3c6e71; font-size: 2.5rem; }
+.empty-state h3 { margin: .8rem 0 .35rem; color: #1d2d44; font-size: 1.1rem; font-weight: 700; }
+.empty-state p { margin: 0; color: #667085; }
+.investment-card { background: #fff; transition: box-shadow .2s ease; }
+.investment-card:hover { box-shadow: 0 12px 30px rgba(29,45,68,.1); }
+.product-icon { display: grid; width: 2.8rem; height: 2.8rem; flex: 0 0 2.8rem; place-items: center; color: #fff; background: #284b63; border-radius: 12px; }
+.product-icon.rd-icon { background: #3c6e71; }
+.status-badge { padding: .35rem .65rem; color: #1f6b4c; background: #e7f5ee; border-radius: 100px; font-size: .75rem; font-weight: 700; }
+.status-badge.matured { color: #284b63; background: #e9f1f2; }
+.deposit-values { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem 1.5rem; }
+.deposit-values div { flex-direction: column; gap: .15rem; }
+.deposit-values strong { color: #1d2d44; font-size: .95rem; }
+.progress { height: 6px; background: #e9edf1; }
+.progress-bar { background: linear-gradient(90deg,#3c6e71,#284b63); }
+
+@media (max-width: 767.98px) {
+  .investment-page { padding-top: 112px; }
+  .investment-heading { align-items: stretch; flex-direction: column; }
+  .available-card { min-width: 0; }
+  .calculator-card { grid-template-columns: 1fr; gap: 1.25rem; padding: 1.25rem; }
+}

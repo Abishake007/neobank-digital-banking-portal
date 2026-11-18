@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/savings/**").authenticated()
+                        .requestMatchers("/api/notifications/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(

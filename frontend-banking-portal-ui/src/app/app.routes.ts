@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { AccountActionComponent } from './pages/account-action/account-action.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { authGuard } from './guards/auth.guard';
 import { adminGuard } from './guards/admin.guard';
@@ -12,7 +13,9 @@ import { MonthlyReportComponent } from './pages/monthly-report/monthly-report.co
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'register', component: RegisterComponent },
+  { path: 'reset-password', component: AccountActionComponent },
+  { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent), canActivate: [authGuard] },
   { path: 'send-money', component: SendMoneyComponent, canActivate: [authGuard] },
   { path: 'investments', loadComponent: () => import('./pages/investments/investments.component').then(m => m.InvestmentsComponent), canActivate: [authGuard] },
   { path: 'add-funds', component: AddFundsComponent, canActivate: [authGuard] },

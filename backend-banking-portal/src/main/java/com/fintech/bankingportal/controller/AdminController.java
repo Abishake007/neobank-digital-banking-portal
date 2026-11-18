@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -89,7 +90,7 @@ public class AdminController {
 
     // CREATE USER + ACCOUNT
     @PostMapping("/users")
-    public String createUser(@RequestBody CreateUserRequest request) {
+    public String createUser(@Valid @RequestBody CreateUserRequest request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             return "User already exists";

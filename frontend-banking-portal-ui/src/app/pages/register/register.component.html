@@ -1,0 +1,70 @@
+<div class="bank-login-wrapper">
+  <div class="bank-login-box shadow-lg">
+    <div class="bank-sidebar d-none d-md-flex">
+      <div class="sidebar-inner">
+        <i class="bi bi-shield-lock-fill display-4 mb-3"></i>
+        <h2 class="fw-bold tracking-tight">NEO BANK</h2>
+        <div class="divider-line my-4"></div>
+        <p class="small text-white-50">Open your Neo Bank account and get started with digital banking.</p>
+      </div>
+    </div>
+
+    <div class="bank-form-container">
+      <div class="form-content">
+        <h3 class="fw-bold text-dark mb-1">Open an Account</h3>
+        <p class="text-muted small mb-4">Create your personal Neo Bank account</p>
+
+        @if (error) {
+          <div class="alert alert-danger border-0 small py-2 mb-4">{{ error }}</div>
+        }
+
+        @if (accountNumber) {
+          <div class="alert alert-success small" role="status">
+            Account created. Your savings account number is <strong>{{ accountNumber }}</strong>.
+            You can now sign in with your new account.
+          </div>
+          <a routerLink="/login" class="btn-bank-primary w-100 d-block text-center text-decoration-none">GO TO SIGN IN</a>
+        } @else {
+          <form (ngSubmit)="register()" #registerForm="ngForm">
+            <div class="mb-3">
+              <label class="form-label-top" for="name">FULL NAME</label>
+              <div class="input-group-custom">
+                <span class="input-icon"><i class="bi bi-person text-muted"></i></span>
+                <input id="name" type="text" class="form-input" placeholder="Your full name" [(ngModel)]="name" name="name" maxlength="100" required />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label-top" for="email">EMAIL ADDRESS</label>
+              <div class="input-group-custom">
+                <span class="input-icon"><i class="bi bi-envelope text-muted"></i></span>
+                <input id="email" type="email" class="form-input" placeholder="email@example.com" [(ngModel)]="email" name="email" required email />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label-top" for="password">PASSWORD</label>
+              <div class="input-group-custom">
+                <span class="input-icon"><i class="bi bi-lock text-muted"></i></span>
+                <input id="password" type="password" class="form-input" placeholder="At least 8 characters" [(ngModel)]="password" name="password" minlength="8" maxlength="72" required />
+              </div>
+              <small class="form-text" [class.text-success]="passwordMeetsRequirements">Use 8–72 characters with uppercase and lowercase letters, a number, and a special character.</small>
+            </div>
+            <div class="mb-4">
+              <label class="form-label-top" for="confirmPassword">CONFIRM PASSWORD</label>
+              <div class="input-group-custom">
+                <span class="input-icon"><i class="bi bi-lock-fill text-muted"></i></span>
+                <input id="confirmPassword" type="password" class="form-input" placeholder="Enter your password again" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+              </div>
+            </div>
+            <button class="btn-bank-primary w-100" type="submit" [disabled]="!registerForm.form.valid || !passwordMeetsRequirements || submitting">
+              {{ submitting ? 'CREATING ACCOUNT…' : 'CREATE ACCOUNT' }}
+            </button>
+          </form>
+          <div class="mt-4 text-center">
+            <span class="text-muted small">Already have an account?</span>
+            <a routerLink="/login" class="text-primary small fw-bold text-decoration-none ms-2">Sign in</a>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

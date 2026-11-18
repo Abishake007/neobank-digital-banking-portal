@@ -22,17 +22,20 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final SavingsGoalRepository savingsGoalRepository;
+    private final ActivityNotificationService notificationService;
 
     public TransactionService(
             AccountRepository accountRepository,
             TransactionRepository transactionRepository,
             UserRepository userRepository,
-            SavingsGoalRepository savingsGoalRepository
+            SavingsGoalRepository savingsGoalRepository,
+            ActivityNotificationService notificationService
     ) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
         this.savingsGoalRepository = savingsGoalRepository;
+        this.notificationService = notificationService;
     }
 
     // ✅ METHOD 1
@@ -75,6 +78,10 @@ public class TransactionService {
         transaction.setCreatedAt(LocalDateTime.now());
 
         transactionRepository.save(transaction);
+        notificationService.notify(senderUser, "Transfer sent", "₹" + amount.toPlainString() + " sent to account " + receiver.getAccountNumber(), "TRANSFER");
+        if (!senderUser.getId().equals(receiver.getUser().getId())) {
+            notificationService.notify(receiver.getUser(), "Money received", "₹" + amount.toPlainString() + " received from account " + sender.getAccountNumber(), "TRANSFER");
+        }
     }
 
     // ✅ METHOD 2
@@ -170,6 +177,7 @@ public class TransactionService {
         // transaction.setDescription("UPI Top-up from " + vpa);
 
         transactionRepository.save(transaction);
+        notificationService.notify(account.getUser(), "Funds added", "₹" + amount.toPlainString() + " was added to your account.", "DEPOSIT");
     }
 
     @Transactional

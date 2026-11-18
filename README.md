@@ -152,6 +152,11 @@ NeoBank is a simple and secure full-stack website that acts like a real-world di
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/auth/login` | Authenticates user and returns JWT access token & refresh token |
+| POST | `/api/auth/register` | Creates a user and savings account |
+| POST | `/api/auth/password-reset/request` | Sends a password reset link without revealing whether an email exists |
+| POST | `/api/auth/password-reset/complete` | Updates a password using a one-time reset token |
+
+Password reset requires SMTP settings at runtime: `SMTP_ENABLED=true`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`, and `SMTP_FROM`. Set `FRONTEND_BASE_URL` to the deployed frontend origin. Registration works without SMTP configuration.
 
 ### Account Endpoints
 | Method | Endpoint | Description |
@@ -163,6 +168,15 @@ NeoBank is a simple and secure full-stack website that acts like a real-world di
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | POST | `/api/transactions/transfer` | Executes a fund transfer between accounts |
+| GET | `/api/transactions/my` | Lists the signed-in user's transactions; the UI supports search and date, type, and status filters |
+
+### Notification Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/notifications` | Lists the current user's latest activity notifications |
+| GET | `/api/notifications/unread-count` | Returns the unread notification count |
+| POST | `/api/notifications/{id}/read` | Marks one notification as read |
+| POST | `/api/notifications/read-all` | Marks all current user's notifications as read |
 
 ### Savings Goals Endpoints (Virtual Pockets)
 | Method | Endpoint | Description |

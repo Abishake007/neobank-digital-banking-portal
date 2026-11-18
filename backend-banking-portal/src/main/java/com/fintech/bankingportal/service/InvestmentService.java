@@ -28,13 +28,16 @@ public class InvestmentService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
     private final AuthService authService;
+    private final ActivityNotificationService notificationService;
 
     public InvestmentService(InvestmentRepository investmentRepository, AccountRepository accountRepository,
-                             UserRepository userRepository, AuthService authService) {
+                             UserRepository userRepository, AuthService authService,
+                             ActivityNotificationService notificationService) {
         this.investmentRepository = investmentRepository;
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
         this.authService = authService;
+        this.notificationService = notificationService;
     }
 
     public List<InvestmentView> list(String email) {
@@ -84,7 +87,10 @@ public class InvestmentService {
         investment.setTermsAccepted(true);
         investment.setSimulationAcknowledged(true);
         investment.setTermsAcceptedAt(LocalDateTime.now());
-        return view(investmentRepository.save(investment));
+        Investment saved = investmentRepository.save(investment);
+        notificationService.notify(account.getUser(), "Investment opened",
+                type + " opened with a first contribution of ₹" + amount.toPlainString() + ".", "INVESTMENT");
+        return view(saved);
     }
 
     @Transactional
@@ -109,7 +115,10 @@ public class InvestmentService {
         account.setLockedBalance(currentLocked.add(investment.getAmount()));
         investment.setPaidInstallments(investment.getPaidInstallments() + 1);
         accountRepository.save(account);
-        return view(investmentRepository.save(investment));
+        Investment saved = investmentRepository.save(investment);
+        notificationService.notify(account.getUser(), "RD installment paid",
+                "Your recurring deposit installment was recorded.", "INVESTMENT");
+        return view(saved);
     }
 
     @Transactional
@@ -135,7 +144,10 @@ public class InvestmentService {
         account.setBalance(account.getBalance().add(payout.subtract(principal).max(BigDecimal.ZERO)));
         investment.setStatus("MATURED");
         accountRepository.save(account);
-        return view(investmentRepository.save(investment));
+        Investment saved = investmentRepository.save(investment);
+        notificationService.notify(account.getUser(), "Investment matured",
+                "Your " + investment.getProductType() + " matured and its funds are now available in your account.", "INVESTMENT");
+        return view(saved);
     }
 
     private Account account(String email) {

@@ -44,9 +44,16 @@
           <div class="text-center mb-3">
             <h6 class="text-uppercase text-muted small fw-bold">Your Real-Time Insights</h6>
           </div>
-          <div class="chart-container">
+          <div class="chart-container" *ngIf="hasSpendingInsights; else noSpendingInsights">
             <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType" [options]="chartOptions"></canvas>
           </div>
+          <ng-template #noSpendingInsights>
+            <div class="text-center text-muted py-5" role="status">
+              <i class="bi bi-bar-chart-line fs-2 d-block mb-2 opacity-50"></i>
+              <p class="mb-1 fw-semibold">No real-time insights yet</p>
+              <small>Your spending breakdown will appear after your first transaction.</small>
+            </div>
+          </ng-template>
         </div>
       </div>
       <div class="col-lg-6 col-md-12">
@@ -71,6 +78,7 @@
            <i class="bi bi-wallet2 opacity-25 fs-5"></i>
         </div>
         <h1 class="fw-bold my-2" style="font-size: 2.2rem;">₹ {{ balance }}</h1>
+        <small class="opacity-75" *ngIf="accountNumber">Savings account · {{ accountNumber }}</small>
         
         <div *ngIf="lockedBalance > 0" 
              class="mt-auto d-flex justify-content-between align-items-center bg-white bg-opacity-10 p-2 px-3 rounded-pill"
@@ -84,8 +92,13 @@
         <div class="mb-2"><i class="bi bi-plus-circle text-success" style="font-size: 2.5rem;"></i></div>
         <h6 class="fw-bold mb-1">Add Funds</h6>
         <p class="text-muted mb-3" style="font-size: 0.8rem; line-height: 1.4;">Top up your balance via secure UPI VPA instantly.</p>
-        <button routerLink="/add-funds" class="btn btn-outline-success btn-sm w-100 py-2 fw-bold rounded-pill" style="font-size: 0.85rem;">Open Top-up</button>
+        <div class="d-grid gap-2">
+          <a routerLink="/add-funds" class="btn btn-outline-success btn-sm py-2 fw-bold rounded-pill" style="font-size: 0.85rem;">Add funds</a>
+          <a routerLink="/send-money" class="btn btn-outline-primary btn-sm py-2 fw-bold rounded-pill" style="font-size: 0.85rem;">Send money</a>
+          <a routerLink="/transactions" class="btn btn-outline-secondary btn-sm py-2 fw-bold rounded-pill" style="font-size: 0.85rem;">Transaction history</a>
+        </div>
       </div>
+
     </div>
 
     <div class="col-lg-8 col-md-7">
@@ -97,7 +110,7 @@
       </div>
 
       <div class="row g-3">
-        <div class="col-md-6" *ngFor="let pocket of pockets">
+        <div *ngFor="let pocket of pockets" [ngClass]="pockets.length === 1 ? 'col-12' : 'col-md-6'">
           <div class="card pocket-card border-0 shadow-sm p-3 h-100">
             <div class="d-flex justify-content-between align-items-center mb-2">
               <span class="fw-bold text-dark" style="font-size: 0.9rem;">{{ pocket.goalName }}</span>
@@ -133,8 +146,97 @@
           <p class="text-muted mt-2 small">No active pockets yet.</p>
         </div>
       </div>
+      <div class="row g-3 mt-1">
+        <div class="col-12">
+          <div class="card border-0 shadow-sm p-4">
+            <h5 class="fw-bold mb-3">This month</h5>
+            <div class="d-flex justify-content-between py-2 border-bottom">
+              <span class="text-muted"><i class="bi bi-arrow-down-left-circle text-success me-2"></i>Money in</span>
+              <strong class="text-success">₹ {{ monthlyIncome | number:'1.2-2' }}</strong>
+            </div>
+            <div class="d-flex justify-content-between py-2">
+              <span class="text-muted"><i class="bi bi-arrow-up-right-circle text-danger me-2"></i>Money out</span>
+              <strong class="text-danger">₹ {{ monthlySpending | number:'1.2-2' }}</strong>
+            </div>
+            <small class="text-muted mb-3" *ngIf="previousMonthSpending > 0">
+              {{ monthlySpending > previousMonthSpending ? 'More' : monthlySpending < previousMonthSpending ? 'Less' : 'Same' }} money out than last month
+              (₹ {{ previousMonthSpending | number:'1.2-2' }} last month)
+            </small>
+            <small class="text-muted mb-3" *ngIf="previousMonthSpending === 0 && monthlySpending > 0">No money out was recorded last month.</small>
+            <a routerLink="/monthly-report" class="small text-decoration-none">View monthly report <i class="bi bi-arrow-right"></i></a>
+          </div>
+        </div>
+        <div class="col-12">
+        <div class="card border-0 shadow-sm p-4 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Recent transactions</h5>
+            <a routerLink="/transactions" class="small text-decoration-none">See all</a>
+          </div>
+          <div *ngIf="transactionsLoading" class="text-center text-muted py-4" role="status">Loading transactions…</div>
+          <div *ngIf="!transactionsLoading && recentTransactions.length === 0" class="text-center text-muted py-4" role="status">
+            <i class="bi bi-clock-history fs-3 d-block mb-2 opacity-50"></i>
+            <span>No transactions yet. Your activity will appear here.</span>
+          </div>
+          <div *ngFor="let tx of recentTransactions" class="d-flex justify-content-between align-items-center py-2 border-bottom">
+            <div>
+              <div class="fw-semibold">{{ transactionDirection(tx) }} <span class="text-muted fw-normal">· {{ transactionCounterparty(tx) }}</span></div>
+              <small class="text-muted">{{ tx.category || 'Transaction' }} · {{ tx.createdAt | date:'mediumDate' }}</small>
+            </div>
+            <div class="text-end">
+              <div class="fw-bold" [class.text-success]="transactionDirection(tx) === 'Money in'" [class.text-danger]="transactionDirection(tx) === 'Money out'">
+                {{ transactionDirection(tx) === 'Money in' ? '+' : '−' }}₹ {{ tx.amount | number:'1.2-2' }}
+              </div>
+              <small class="text-muted">{{ tx.status }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
   </div>
+
+  <section class="investment-feature my-4 p-4 p-lg-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <span class="investment-eyebrow">SAVE WITH A PLAN</span>
+        <h2 class="display-6 fw-bold mt-2 mb-3">Make room for your next goal.</h2>
+        <p class="investment-feature-copy mb-4">Choose a Fixed Deposit for a one-time deposit or a Recurring Deposit to build a monthly saving habit. Follow your progress and see projected maturity values in one place.</p>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <span class="investment-benefit"><i class="bi bi-lock-fill me-2"></i>Choose your term</span>
+          <span class="investment-benefit"><i class="bi bi-calendar-check me-2"></i>Build a routine</span>
+          <span class="investment-benefit"><i class="bi bi-graph-up-arrow me-2"></i>Track your plan</span>
+        </div>
+        <p class="small investment-disclaimer mb-3">Rates and projected returns are simulated for this demo; they are not live bank offers or guaranteed returns.</p>
+        <a routerLink="/investments" class="btn btn-light btn-lg rounded-pill px-4 fw-bold">Explore investment plans <i class="bi bi-arrow-right ms-2"></i></a>
+      </div>
+      <div class="col-lg-5">
+        <div class="investment-illustration" role="img" aria-label="Illustration of savings growing over time">
+          <svg viewBox="0 0 520 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="growthArea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#62c8b7" stop-opacity=".42" />
+                <stop offset="1" stop-color="#62c8b7" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <circle cx="390" cy="72" r="48" fill="#d9b96e" opacity=".22" />
+            <rect x="40" y="40" width="440" height="240" rx="24" fill="#fff" opacity=".08" />
+            <path d="M82 230H445M82 185H445M82 140H445M82 95H445" stroke="#fff" stroke-opacity=".13" stroke-width="2" />
+            <path d="M95 224L172 194L245 202L315 143L377 155L438 86V250H95Z" fill="url(#growthArea)" />
+            <path d="M95 224L172 194L245 202L315 143L377 155L438 86" fill="none" stroke="#72d6c2" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+            <circle cx="438" cy="86" r="9" fill="#fff" stroke="#72d6c2" stroke-width="6" />
+            <rect x="285" y="48" width="142" height="52" rx="16" fill="#fff" />
+            <text x="356" y="81" text-anchor="middle" fill="#284b63" font-size="19" font-family="Arial, sans-serif" font-weight="700">YOUR PLAN</text>
+            <circle cx="115" cy="125" r="38" fill="#d9b96e" />
+            <circle cx="115" cy="125" r="29" fill="none" stroke="#fff1c9" stroke-width="3" />
+            <text x="115" y="136" text-anchor="middle" fill="#284b63" font-size="31" font-family="Arial, sans-serif" font-weight="700">₹</text>
+            <rect x="78" y="245" width="42" height="15" rx="7" fill="#d9b96e" />
+            <rect x="85" y="228" width="42" height="15" rx="7" fill="#edce82" />
+            <rect x="92" y="211" width="42" height="15" rx="7" fill="#f6dfa4" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
 <section class="image-content py-5">

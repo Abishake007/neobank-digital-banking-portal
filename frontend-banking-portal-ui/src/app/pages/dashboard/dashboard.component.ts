@@ -25,7 +25,13 @@ export class DashboardComponent implements OnInit {
   // --- Account Data ---
   balance = 0;
   lockedBalance = 0;
+  accountNumber = '';
+  monthlyIncome = 0;
+  monthlySpending = 0;
+  previousMonthSpending = 0;
+  private allTransactions: any[] = [];
   recentTransactions: any[] = [];
+  transactionsLoading = true;
   isAdmin = false;
 
   // --- Virtual Pockets Data ---
@@ -47,6 +53,11 @@ export class DashboardComponent implements OnInit {
       backgroundColor: ['#353535', '#3C6E71', '#284B63', '#D9D9D9', '#3C6E71'] 
     }]
   };
+
+  get hasSpendingInsights(): boolean {
+    const values = this.doughnutChartData.datasets[0]?.data ?? [];
+    return values.some(value => Number(value) > 0);
+  }
 
   public chartOptions: any = {
     responsive: true,
@@ -84,6 +95,8 @@ export class DashboardComponent implements OnInit {
       // ✅ Update the UI variables with the new data from DB
       this.balance = acc.availableBalance; 
       this.lockedBalance = acc.lockedBalance; // Make sure this variable exists at the top of your class
+      this.accountNumber = acc.accountNumber || '';
+      this.calculateMonthlyTotals(this.allTransactions);
       
       console.log("Dashboard Refreshed. New Available Balance:", this.balance);
     },
@@ -92,13 +105,58 @@ export class DashboardComponent implements OnInit {
 
   // 📜 Refresh other parts
   this.dashboardService.getMyTransactions().subscribe({
-    next: (data) => this.recentTransactions = data,
-    error: (err) => console.error('Transaction error', err)
+    next: (data) => {
+      const sorted = [...data].sort((a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+      this.recentTransactions = sorted.slice(0, 5);
+      this.allTransactions = data;
+      this.calculateMonthlyTotals(data);
+      this.transactionsLoading = false;
+    },
+    error: (err) => {
+      console.error('Transaction error', err);
+      this.transactionsLoading = false;
+    }
   });
 
   this.loadSpendingStats();
   this.loadPockets();
 }
+
+  private calculateMonthlyTotals(transactions: any[]): void {
+    const now = new Date();
+    const previousMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    this.monthlyIncome = 0;
+    this.monthlySpending = 0;
+    this.previousMonthSpending = 0;
+
+    for (const tx of transactions) {
+      const createdAt = new Date(tx.createdAt);
+      if (tx.status !== 'SUCCESS') continue;
+
+      const amount = Number(tx.amount) || 0;
+      const isIncoming = tx.toAccount?.accountNumber === this.accountNumber;
+      const isOutgoing = tx.fromAccount?.accountNumber === this.accountNumber;
+      if (createdAt.getFullYear() === now.getFullYear() && createdAt.getMonth() === now.getMonth()) {
+        if (isIncoming) this.monthlyIncome += amount;
+        if (isOutgoing) this.monthlySpending += amount;
+      } else if (createdAt.getFullYear() === previousMonth.getFullYear() && createdAt.getMonth() === previousMonth.getMonth() && isOutgoing) {
+        this.previousMonthSpending += amount;
+      }
+    }
+  }
+
+  transactionDirection(tx: any): string {
+    return tx.toAccount?.accountNumber === this.accountNumber ? 'Money in' : 'Money out';
+  }
+
+  transactionCounterparty(tx: any): string {
+    const otherAccount = tx.fromAccount?.accountNumber === this.accountNumber
+      ? tx.toAccount?.accountNumber
+      : tx.fromAccount?.accountNumber;
+    return otherAccount || 'External account';
+  }
 
   /**
    * Fetch spending analytics for the doughnut chart

@@ -23,6 +23,21 @@ export class AuthService {
       );
   }
 
+  register(name: string, email: string, password: string) {
+    return this.http.post<{ message: string; accountNumber: string }>(
+      `${this.apiUrl}/register`,
+      { name, email, password }
+    );
+  }
+
+  requestPasswordReset(email: string) {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/password-reset/request`, { email });
+  }
+
+  completePasswordReset(token: string, password: string) {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/password-reset/complete`, { token, password });
+  }
+
   // ✅ AUTH STATE
   isLoggedIn(): boolean {
     return !!localStorage.getItem('accessToken') && !this.isTokenExpired();

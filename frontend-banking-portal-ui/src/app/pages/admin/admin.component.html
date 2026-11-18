@@ -23,7 +23,8 @@
 
         <div class="col-md-2">
           <input type="password" class="form-control" placeholder="Password"
-            [(ngModel)]="newUser.password">
+            [(ngModel)]="newUser.password" minlength="8" maxlength="72">
+          <small class="form-text">8–72 chars, uppercase, lowercase, number, special character.</small>
         </div>
 
         <div class="col-md-2">
@@ -34,7 +35,7 @@
         </div>
 
         <div class="col-md-2">
-          <button class="btn btn-primary w-100" (click)="createUser()">
+          <button class="btn btn-primary w-100" (click)="createUser()" [disabled]="!newUser.name.trim() || !newUser.email.trim() || !newUserPasswordMeetsRequirements">
             Create
           </button>
         </div>
@@ -43,10 +44,15 @@
   </div>
 
   <!-- USERS TABLE -->
-  <div class="card shadow-sm">
+  <div class="card shadow-sm table-soft-card">
     <div class="card-body p-0">
 
-      <table class="table table-hover mb-0">
+      <div class="p-3 border-bottom">
+        <label class="form-label small fw-semibold mb-1" for="user-search">Search users</label>
+        <input id="user-search" type="search" class="form-control" [(ngModel)]="userSearchTerm" placeholder="Search by name, email, ID, role, or status">
+      </div>
+
+      <table class="table table-hover mb-0 table-soft-grid">
         <thead class="table-light">
           <tr>
             <th>ID</th>
@@ -59,7 +65,7 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let user of users">
+          <tr *ngFor="let user of filteredUsers">
             <td>{{ user.id }}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
@@ -91,9 +97,9 @@
             </td>
           </tr>
 
-          <tr *ngIf="users.length === 0">
+          <tr *ngIf="filteredUsers.length === 0">
             <td colspan="6" class="text-center text-muted py-4">
-              No users found
+              {{ users.length ? 'No users match your search.' : 'No users found.' }}
             </td>
           </tr>
 

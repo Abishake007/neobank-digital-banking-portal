@@ -16,6 +16,7 @@ import { PdfStatementService } from '../../services/pdf-statement.service';
 export class AdminComponent implements OnInit {
 
   users: any[] = [];
+  userSearchTerm = '';
   loading = true;
   error = '';
   selectedUser: any = null;
@@ -40,6 +41,19 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUsers();
+  }
+
+  get filteredUsers(): any[] {
+    const term = this.userSearchTerm.trim().toLowerCase();
+    if (!term) return this.users;
+    return this.users.filter(user =>
+      [user.id, user.name, user.email, user.role, user.enabled ? 'enabled' : 'disabled']
+        .some(value => String(value ?? '').toLowerCase().includes(term))
+    );
+  }
+
+  get newUserPasswordMeetsRequirements(): boolean {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,72}$/.test(this.newUser.password);
   }
 
   loadUsers() {
@@ -114,6 +128,10 @@ export class AdminComponent implements OnInit {
   }
 
   createUser() {
+    if (!this.newUserPasswordMeetsRequirements) {
+      this.alerts.show('Password must be 8–72 characters and include uppercase and lowercase letters, a number, and a special character.', 'error');
+      return;
+    }
     this.adminService.createUser(this.newUser).subscribe({
       next: () => {
         this.newUser = { name:'', email:'', password:'', role:'USER' };

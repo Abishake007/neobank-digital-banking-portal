@@ -29,7 +29,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (!user.isEnabled()) {
             throw new DisabledException("User account is disabled");
         }
-
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())

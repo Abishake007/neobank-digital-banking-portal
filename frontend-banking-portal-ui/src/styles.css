@@ -421,6 +421,59 @@ body[data-theme="dark"] .navbar {
   transition: transform 0.2s ease;
 }
 
+/* Keep white content cards clearly separated from the page background. */
+.card:not(.balance-card) {
+  border: 1px solid rgba(20, 30, 40, .28) !important;
+}
+
+body[data-theme="dark"] .card:not(.balance-card) {
+  border-color: rgba(255, 255, 255, .24) !important;
+}
+
+.card.table-soft-card {
+  overflow: hidden;
+  border: 1px solid #dfe5eb !important;
+  border-radius: 14px;
+}
+
+.table-soft-grid > :not(caption) > * > * {
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  border-bottom: 1px solid #e5eaf0 !important;
+}
+
+.table-soft-grid > thead > tr > th {
+  padding-top: .9rem;
+  padding-bottom: .9rem;
+  color: #284b63 !important;
+  background: #f3f6f9 !important;
+  font-size: .78rem;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+}
+
+.table-soft-grid > tbody > tr:hover > * {
+  background: #f6f9fb !important;
+}
+
+body[data-theme="dark"] .card.table-soft-card {
+  border-color: rgba(255, 255, 255, .2) !important;
+}
+
+body[data-theme="dark"] .table-soft-grid > :not(caption) > * > * {
+  border-bottom-color: rgba(255, 255, 255, .14) !important;
+}
+
+body[data-theme="dark"] .table-soft-grid > thead > tr > th {
+  color: #ffffff !important;
+  background: #243e59 !important;
+}
+
+body[data-theme="dark"] .table-soft-grid > tbody > tr:hover > * {
+  background: #2c4a67 !important;
+}
+
 .card:hover {
   transform: translateY(-3px);
 }

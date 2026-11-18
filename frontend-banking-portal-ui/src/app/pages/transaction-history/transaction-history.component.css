@@ -1,0 +1,20 @@
+.transaction-filters {
+  background: #f7f9fb;
+  border-bottom: 1px solid #e5eaf0;
+}
+
+.filter-search {
+  min-width: 230px;
+}
+
+.transaction-filters > div:not(.filter-search) {
+  min-width: 135px;
+}
+
+@media (max-width: 575.98px) {
+  .filter-search,
+  .transaction-filters > div:not(.filter-search) {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+}

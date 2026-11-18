@@ -1,0 +1,59 @@
+<div class="bank-login-wrapper">
+  <div class="bank-login-box shadow-lg">
+    <div class="bank-sidebar d-none d-md-flex">
+      <div class="sidebar-inner">
+        <i class="bi bi-shield-lock-fill display-4 mb-3"></i>
+        <h2 class="fw-bold tracking-tight">NEO BANK</h2>
+        <div class="divider-line my-4"></div>
+        <p class="small text-white-50">Choose a new password to restore access to your account.</p>
+      </div>
+    </div>
+
+    <div class="bank-form-container">
+      <div class="form-content">
+        <h3 class="fw-bold text-dark mb-1">Reset password</h3>
+        <p class="text-muted small mb-4">We will send a secure, one-time reset link</p>
+
+        @if (error) { <div class="alert alert-danger border-0 small py-2">{{ error }}</div> }
+        @if (message) { <div class="alert alert-success small" role="status">{{ message }}</div> }
+
+        @if (token) {
+          @if (!completed) {
+            <form (ngSubmit)="resetPassword()" #resetForm="ngForm">
+              <div class="mb-3">
+                <label class="form-label-top" for="password">NEW PASSWORD</label>
+                <div class="input-group-custom"><span class="input-icon"><i class="bi bi-lock text-muted"></i></span>
+                  <input id="password" type="password" class="form-input" [(ngModel)]="password" name="password" minlength="8" maxlength="72" required />
+                </div>
+                <small class="form-text" [class.text-success]="passwordMeetsRequirements">Use 8–72 characters with uppercase and lowercase letters, a number, and a special character.</small>
+              </div>
+              <div class="mb-4">
+                <label class="form-label-top" for="confirmPassword">CONFIRM PASSWORD</label>
+                <div class="input-group-custom"><span class="input-icon"><i class="bi bi-lock-fill text-muted"></i></span>
+                  <input id="confirmPassword" type="password" class="form-input" [(ngModel)]="confirmPassword" name="confirmPassword" required />
+                </div>
+              </div>
+              <button class="btn-bank-primary w-100" type="submit" [disabled]="!resetForm.form.valid || !passwordMeetsRequirements || processing">UPDATE PASSWORD</button>
+            </form>
+          } @else {
+            <a routerLink="/login" class="btn-bank-primary w-100 d-block text-center text-decoration-none">GO TO SIGN IN</a>
+          }
+          @if (error) { <a routerLink="/reset-password" class="d-block text-center small mt-3">Request another reset link</a> }
+        } @else {
+          <form (ngSubmit)="requestResetLink()" #requestForm="ngForm">
+            <div class="mb-4">
+              <label class="form-label-top" for="email">EMAIL ADDRESS</label>
+              <div class="input-group-custom"><span class="input-icon"><i class="bi bi-envelope text-muted"></i></span>
+                <input id="email" type="email" class="form-input" placeholder="email@example.com" [(ngModel)]="email" name="email" required email />
+              </div>
+            </div>
+            <button class="btn-bank-primary w-100" type="submit" [disabled]="!requestForm.form.valid || processing">
+              {{ processing ? 'SENDING…' : 'SEND RESET LINK' }}
+            </button>
+          </form>
+        }
+        <div class="mt-4 text-center"><a routerLink="/login" class="text-primary small fw-bold text-decoration-none">Back to sign in</a></div>
+      </div>
+    </div>
+  </div>
+</div>

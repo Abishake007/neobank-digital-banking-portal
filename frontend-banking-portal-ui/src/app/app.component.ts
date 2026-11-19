@@ -38,6 +38,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.showNavbar = !event.url.includes('/login');
+        this.closeMobileNavbar();
         if (this.authService.isLoggedIn()) this.refreshNotifications();
       }
     });
@@ -62,6 +63,15 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     this.notificationService.list().subscribe({ next: list => this.notifications = list, error: () => undefined });
     this.notificationService.unreadCount().subscribe({ next: result => this.unreadNotificationCount = result.count, error: () => undefined });
+  }
+
+  private closeMobileNavbar(): void {
+    if (typeof window === 'undefined' || !window.matchMedia('(max-width: 991.98px)').matches) return;
+
+    const navbar = document.getElementById('bankNavbar');
+    if (navbar?.classList.contains('show') && typeof bootstrap !== 'undefined') {
+      bootstrap.Collapse.getOrCreateInstance(navbar).hide();
+    }
   }
 
   markNotificationRead(notification: ActivityNotification): void {

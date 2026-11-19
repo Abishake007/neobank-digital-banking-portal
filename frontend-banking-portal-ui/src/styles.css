@@ -457,6 +457,26 @@ body[data-theme="dark"] .card:not(.balance-card) {
   background: #f6f9fb !important;
 }
 
+/* Keep dense data tables usable on phones without widening the page. */
+.table-responsive {
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-soft-grid {
+  min-width: 600px;
+}
+
+.table-soft-grid th,
+.table-soft-grid td {
+  white-space: nowrap;
+}
+
+.table-soft-grid td:nth-child(2),
+.table-soft-grid td:nth-child(3),
+.table-soft-grid td:nth-child(4) {
+  white-space: normal;
+}
+
 body[data-theme="dark"] .card.table-soft-card {
   border-color: rgba(255, 255, 255, .2) !important;
 }

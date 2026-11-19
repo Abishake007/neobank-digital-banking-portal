@@ -43,7 +43,7 @@ export class TransactionHistoryComponent implements OnInit {
       const type = isIncoming ? 'CREDIT' : 'DEBIT';
       const searchable = [
         tx.fromAccount?.accountNumber, tx.toAccount?.accountNumber,
-        tx.category, tx.status, tx.amount, type
+        tx.category, tx.description, tx.status, tx.amount, type
       ].join(' ').toLowerCase();
 
       return (!term || searchable.includes(term))
@@ -52,6 +52,18 @@ export class TransactionHistoryComponent implements OnInit {
         && (this.typeFilter === 'ALL' || this.typeFilter === type)
         && (this.statusFilter === 'ALL' || String(tx.status).toUpperCase() === this.statusFilter);
     });
+  }
+
+  fromLabel(tx: any): string {
+    if (tx.fromAccount?.accountNumber) return tx.fromAccount.accountNumber;
+    return tx.category === 'POCKET' || tx.category === 'INVESTMENT' ? tx.description || tx.category : 'External';
+  }
+
+  toLabel(tx: any): string {
+    if (tx.toAccount?.accountNumber) return tx.toAccount.accountNumber;
+    return tx.category === 'POCKET' || tx.category === 'INVESTMENT'
+      ? (tx.fromAccount?.accountNumber ? tx.description || tx.category : 'Available balance')
+      : 'External';
   }
 
   clearFilters(): void {
@@ -83,14 +95,15 @@ export class TransactionHistoryComponent implements OnInit {
   downloadStatement(): void {
     const rows = this.filteredTransactions.map(tx => [
       tx.createdAt ? new Date(tx.createdAt).toLocaleString() : '-',
-      tx.fromAccount?.accountNumber || 'External',
-      tx.toAccount?.accountNumber || 'External',
+      this.fromLabel(tx),
+      this.toLabel(tx),
       String(tx.category || 'OTHERS'),
+      String(tx.description || ''),
       String(tx.amount ?? ''),
       String(tx.status || '')
     ]);
     this.pdfStatement.download('Transaction Statement',
-      ['Date', 'From account', 'To account', 'Category', 'Amount (INR)', 'Status'],
+      ['Date', 'From account', 'To account', 'Category', 'Description', 'Amount (INR)', 'Status'],
       rows, 'my-filtered-transaction-statement.pdf');
   }
 }

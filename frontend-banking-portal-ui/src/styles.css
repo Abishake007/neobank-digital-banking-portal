@@ -1,5 +1,5 @@
 .page-content {
-  padding-top: 90px; /* navbar height */
+  padding-top: 112px; /* compact header plus a 16px content gap */
   padding-bottom: 40px;
 }
 
@@ -98,16 +98,16 @@ app-root > router-outlet + * {
    THEME VARIABLES
 ======================= */
 :root {
-  --neo-charcoal: #353535;
-  --neo-teal: #3C6E71;
+  --neo-charcoal: #242424;
+  --neo-teal: #B32025;
   --neo-white: #FFFFFF;
-  --neo-gray: #D9D9D9;
-  --neo-blue: #284B63;
-  --neo-burgundy: var(--neo-charcoal);
-  --neo-crimson: var(--neo-teal);
+  --neo-gray: #D8D8D8;
+  --neo-blue: #343434;
+  --neo-burgundy: #8E171B;
+  --neo-crimson: #B32025;
   --neo-cream: var(--neo-white);
   --neo-navy: var(--neo-blue);
-  --neo-slate: var(--neo-teal);
+  --neo-slate: #B32025;
 
   --primary-blue: var(--neo-navy);
   --accent-red: var(--neo-crimson);
@@ -120,18 +120,18 @@ app-root > router-outlet + * {
   --neo-primary-text: var(--neo-navy);
 
   --bs-primary: var(--neo-navy);
-  --bs-primary-rgb: 40, 75, 99;
+  --bs-primary-rgb: 36, 36, 36;
   --bs-danger: var(--neo-crimson);
-  --bs-danger-rgb: 60, 110, 113;
+  --bs-danger-rgb: 179, 32, 37;
   --bs-success: var(--neo-slate);
-  --bs-success-rgb: 60, 110, 113;
+  --bs-success-rgb: 179, 32, 37;
   --bs-info: var(--neo-slate);
-  --bs-info-rgb: 60, 110, 113;
+  --bs-info-rgb: 179, 32, 37;
   --bs-warning: var(--neo-cream);
   --bs-warning-rgb: 255, 255, 255;
   --bs-secondary: var(--neo-teal);
-  --bs-secondary-rgb: 60, 110, 113;
-  --bs-link-color: var(--neo-navy);
+  --bs-secondary-rgb: 216, 216, 216;
+  --bs-link-color: var(--neo-crimson);
   --bs-link-hover-color: var(--neo-burgundy);
   --bs-body-bg: var(--bg-color);
   --bs-body-color: var(--text-color);
@@ -230,7 +230,7 @@ body {
 .progress-bar { background-color: var(--neo-crimson) !important; }
 .form-control:focus, .form-select:focus {
   border-color: var(--neo-slate);
-  box-shadow: 0 0 0 .2rem rgba(60, 110, 113, .25);
+  box-shadow: 0 0 0 .2rem rgba(179, 32, 37, .18);
 }
 
 /* =======================
@@ -535,4 +535,161 @@ router-outlet + * {
     opacity: 1;
     transform: translateY(0);
   }
+}
+/* Clean red, charcoal and white banking navigation */
+.utility-bar {
+  position: fixed;
+  z-index: 1051;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 28px;
+  border-bottom: 1px solid #dedede;
+  background: #f3f3f3;
+  color: #333;
+  font-size: .62rem;
+  font-weight: 700;
+}
+
+.utility-inner {
+  display: flex;
+  height: 100%;
+  max-width: 1440px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(14px, 2.2vw, 34px);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+.utility-inner a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #333;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.utility-inner a:hover,
+.utility-inner a:focus-visible { color: #b32025; text-decoration: underline; }
+.utility-inner i { font-size: .8rem; }
+
+.navbar {
+  top: 28px;
+  left: 0;
+  width: 100%;
+  min-height: 68px;
+  transform: none;
+  padding: .4rem clamp(16px, 3vw, 44px);
+  background: #fff !important;
+  border: 0 !important;
+  border-bottom: 1px solid #d8d8d8 !important;
+  border-radius: 0;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .045) !important;
+}
+
+body[data-theme="dark"] .navbar {
+  background: #fff !important;
+  border-color: #dedede !important;
+  border-bottom-color: #d8d8d8 !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, .045) !important;
+}
+
+.navbar .container-fluid {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.navbar .navbar-brand {
+  flex: 0 0 auto;
+  margin-right: clamp(22px, 4vw, 68px);
+  color: #171717 !important;
+  font-size: 1.3rem;
+  letter-spacing: -.06em;
+}
+
+.navbar .navbar-brand i {
+  color: #b32025 !important;
+  font-size: 1.3rem;
+}
+
+.navbar .navbar-collapse { flex-grow: 1; }
+.navbar .navbar-nav.me-auto { margin-right: auto !important; margin-left: auto; }
+.navbar .navbar-nav { gap: clamp(0px, .65vw, 10px); }
+.navbar .nav-link {
+  color: #202020 !important;
+  font-size: .71rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.navbar-nav > .nav-item > .nav-link { padding: .4rem .55rem; }
+.navbar .nav-link.active,
+.navbar .nav-link:hover { color: #b32025 !important; }
+
+.navbar .online-banking-button {
+  min-width: 154px;
+  padding: .42rem .85rem;
+  border: 1px solid #555;
+  border-radius: 999px;
+  background: #fff;
+  color: #222;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: none;
+}
+.navbar .online-banking-button:hover {
+  border-color: #b32025;
+  color: #b32025;
+}
+
+.navbar .nav-link,
+.navbar .nav-link.active,
+.navbar .navbar-brand,
+.navbar .navbar-brand.text-primary {
+  color: #242424 !important;
+}
+
+.navbar .navbar-brand i,
+.navbar .nav-link.active,
+.navbar .nav-link:hover { color: #b32025 !important; }
+.navbar-nav > .nav-item > .nav-link::after { background-color: #b32025; }
+.navbar-nav > .nav-item > .nav-link:hover { background: #f3f3f3; }
+.navbar .navbar-toggler { border-color: #bdbdbd; }
+.navbar .navbar-toggler-icon { filter: none; }
+.navbar .user-box-link {
+  display: inline-flex;
+  min-width: 154px;
+  align-items: center;
+  justify-content: center;
+  padding: .42rem .85rem !important;
+  border: 1px solid #555;
+  border-radius: 999px;
+  color: #242424 !important;
+  text-decoration: none;
+}
+.navbar .user-box-link:hover { background: #f3f3f3; }
+.navbar .notification-button { color: #242424 !important; }
+
+@media (max-width: 991.98px) {
+  .navbar { min-height: 60px; }
+  .page-content { padding-top: 104px; }
+  .navbar .navbar-collapse {
+    margin-top: .75rem;
+    padding: .75rem;
+    border-top: 1px solid #e2e2e2;
+    background: #fff;
+  }
+  .navbar .navbar-nav { align-items: stretch !important; gap: 2px; }
+  .navbar .navbar-nav.me-auto { margin-left: 0; }
+  .navbar .online-banking-button { margin-top: .5rem; }
+}
+
+@media (max-width: 575.98px) {
+  .utility-inner { gap: 12px; padding: 0 10px; font-size: .56rem; }
+  .navbar .navbar-brand { margin-right: 12px; font-size: 1.15rem; }
+  .navbar .navbar-brand i { font-size: 1.15rem; }
+  .page-content { padding-top: 104px; }
 }

@@ -37,6 +37,9 @@ public class Transaction {
 
     private LocalDateTime createdAt;
 
+    @Column(length = 255)
+    private String description;
+
     // Optional: Auto-set the timestamp and a default category
     @PrePersist
     protected void onCreate() {

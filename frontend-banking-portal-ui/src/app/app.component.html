@@ -9,9 +9,16 @@
 }
 
 @if (showNavbar) {
+<div class="utility-bar" role="group" aria-label="Quick links">
+  <div class="utility-inner">
+    <a href="mailto:neobanksupport&#64;gmail.com?subject=NeoBank%20Help"><i class="bi bi-question-circle-fill"></i> HELP</a>
+    <a routerLink="/reset-password"><i class="bi bi-shield-lock-fill"></i> SECURITY</a>
+    <a href="mailto:neobanksupport&#64;gmail.com"><i class="bi bi-envelope-fill"></i> CONTACT</a>
+  </div>
+</div>
 <nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm">
   <div class="container-fluid">
-    <a class="navbar-brand fw-bold text-primary d-flex align-items-center" routerLink="/dashboard">
+    <a class="navbar-brand fw-bold d-flex align-items-center" routerLink="/dashboard">
       <i class="bi bi-bank me-2"></i> Neo Bank
     </a>
 
@@ -40,12 +47,14 @@
       <ul class="navbar-nav mb-2 mb-lg-0 align-items-center">
         @if (!authService.isLoggedIn()) {
           <li class="nav-item">
-            <button class="btn btn-primary btn-sm" (click)="login()">Login</button>
+            <button class="btn btn-outline-dark online-banking-button" (click)="login()"><i class="bi bi-display me-2"></i>Online Banking</button>
           </li>
         } @else {
           <li class="nav-item dropdown me-2">
             <button class="btn nav-link notification-button position-relative" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Activity notifications">
-              <i class="bi bi-bell fs-5"></i>
+              <svg class="notification-bell-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+              </svg>
               <span *ngIf="unreadNotificationCount > 0" class="notification-count">{{ unreadNotificationCount > 9 ? '9+' : unreadNotificationCount }}</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end notification-menu">
@@ -68,7 +77,7 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle user-box-link" href="#" role="button" data-bs-toggle="dropdown">
-              {{ authService.getUserInitial() }}
+              <i class="bi bi-display me-2"></i><span>Online Banking</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li class="dropdown-item-text fw-semibold">{{ authService.getUserEmail() }}</li>

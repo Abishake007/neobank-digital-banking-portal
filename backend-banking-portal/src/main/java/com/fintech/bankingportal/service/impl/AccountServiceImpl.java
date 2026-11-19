@@ -9,6 +9,9 @@ import com.fintech.bankingportal.service.AccountService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import com.fintech.bankingportal.repository.SavingsGoalRepository;
+import com.fintech.bankingportal.repository.TransactionRepository;
+import com.fintech.bankingportal.entity.Transaction;
+import com.fintech.bankingportal.entity.TransactionCategory;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -19,15 +22,18 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
     private final SavingsGoalRepository savingsGoalRepository;
+    private final TransactionRepository transactionRepository;
 
     public AccountServiceImpl(
             AccountRepository accountRepository,
             UserRepository userRepository,
-            SavingsGoalRepository savingsGoalRepository
+            SavingsGoalRepository savingsGoalRepository,
+            TransactionRepository transactionRepository
     ) {
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
         this.savingsGoalRepository = savingsGoalRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -82,6 +88,14 @@ public class AccountServiceImpl implements AccountService {
         // 4. Save and Delete
         accountRepository.save(account);
         savingsGoalRepository.delete(goal);
+
+        Transaction transaction = new Transaction();
+        transaction.setToAccount(account);
+        transaction.setAmount(savedAmount);
+        transaction.setCategory(TransactionCategory.POCKET);
+        transaction.setDescription("Pocket claimed: " + goal.getGoalName());
+        transaction.setStatus("SUCCESS");
+        transactionRepository.save(transaction);
     }
 
     @Override

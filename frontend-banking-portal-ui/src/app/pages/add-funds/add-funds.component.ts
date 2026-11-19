@@ -9,6 +9,7 @@ import { AlertService } from '../../services/alert.service';
   selector: 'app-add-funds',
   standalone: true,
   imports: [CommonModule, FormsModule],
+  styleUrls: ['./add-funds.component.css'],
   templateUrl: './add-funds.component.html'
 })
 export class AddFundsComponent {

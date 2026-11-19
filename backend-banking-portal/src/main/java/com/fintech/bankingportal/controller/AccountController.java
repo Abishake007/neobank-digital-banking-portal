@@ -2,6 +2,7 @@ package com.fintech.bankingportal.controller;
 
 import com.fintech.bankingportal.entity.Account;
 import com.fintech.bankingportal.service.AccountService;
+import com.fintech.bankingportal.repository.SavingsGoalRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,9 +19,11 @@ import java.util.Map;
 public class AccountController {
 
     private final AccountService accountService;
+    private final SavingsGoalRepository savingsGoalRepository;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, SavingsGoalRepository savingsGoalRepository) {
         this.accountService = accountService;
+        this.savingsGoalRepository = savingsGoalRepository;
     }
 
     @GetMapping("/my")
@@ -37,6 +40,15 @@ public class AccountController {
 
         // Money in Pockets (The ₹12,000)
         response.put("lockedBalance", account.getLockedBalance());
+        BigDecimal pocketLocked = savingsGoalRepository.findByAccountId(account.getId()).stream()
+                .map(goal -> goal.getSavedAmount() == null ? BigDecimal.ZERO : goal.getSavedAmount())
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalLocked = account.getLockedBalance() == null ? BigDecimal.ZERO : account.getLockedBalance();
+        // The account's locked balance is the source of truth. This also includes
+        // investments that predate the investment records used for the breakdown.
+        BigDecimal investmentLocked = totalLocked.subtract(pocketLocked).max(BigDecimal.ZERO);
+        response.put("pocketLockedBalance", pocketLocked);
+        response.put("investmentLockedBalance", investmentLocked);
 
         // Spendable amount (Calculated: ₹70,000)
         response.put("availableBalance", account.getAvailableBalance());

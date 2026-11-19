@@ -1,5 +1,5 @@
 .investment-page {
-  padding-top: 126px;
+  padding-top: 112px;
   padding-bottom: 56px;
   background: #f5f7fa;
 }
@@ -68,8 +68,60 @@
 .progress-bar { background: linear-gradient(90deg,#3c6e71,#284b63); }
 
 @media (max-width: 767.98px) {
-  .investment-page { padding-top: 112px; }
+  .investment-page { padding-top: 104px; }
   .investment-heading { align-items: stretch; flex-direction: column; }
   .available-card { min-width: 0; }
   .calculator-card { grid-template-columns: 1fr; gap: 1.25rem; padding: 1.25rem; }
 }
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .investment-page { padding-top: 104px; }
+}
+
+/* Shared NeoBank red, gray and charcoal theme */
+.investment-page { background: #f3f3f3; }
+.investment-heading h1,
+.calculator-intro h2,
+.calculator-result strong,
+.confirm-dialog h2,
+.confirm-summary strong,
+.rate-summary strong,
+.empty-state h3,
+.deposit-values strong { color: #242424; }
+.investment-heading p,
+.calculator-intro p,
+.calculator-result span,
+.calculator-result small,
+.confirm-summary span,
+.terms-box ul,
+.product-explainer span,
+.form-text,
+.rate-summary span,
+.deposit-values span,
+.empty-state p { color: #666; }
+.eyebrow,
+.empty-state > i { color: #b32025; }
+.available-card { background: linear-gradient(135deg, #242424, #414141); }
+.simulation-note { color: #343434; background: #ededed; border-color: #d8d8d8; }
+.calculator-card,
+.investment-form,
+.investment-card { border-color: #dedede; }
+.calc-type-switch,
+.product-switch { background: #efefef; }
+.calc-type-switch button.active,
+.product-switch button.active { color: #b32025; }
+.calculator-result,
+.confirm-summary,
+.terms-box,
+.rate-summary { background: #f1f1f1; }
+.calculator-result strong { color: #b32025; }
+.confirm-icon,
+.product-icon,
+.product-icon.rd-icon { background: #b32025; }
+.product-explainer { border-left-color: #b32025; }
+.count-badge { color: #242424; background: #e8e8e8; }
+.status-badge,
+.status-badge.matured { color: #333; background: #e8e8e8; }
+.progress { background: #e5e5e5; }
+.progress-bar { background: #b32025; }
+.acknowledgement input { accent-color: #b32025; }

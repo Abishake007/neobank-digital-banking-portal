@@ -8,6 +8,9 @@ import com.fintech.bankingportal.entity.User;
 import com.fintech.bankingportal.repository.AccountRepository;
 import com.fintech.bankingportal.repository.InvestmentRepository;
 import com.fintech.bankingportal.repository.UserRepository;
+import com.fintech.bankingportal.repository.TransactionRepository;
+import com.fintech.bankingportal.entity.Transaction;
+import com.fintech.bankingportal.entity.TransactionCategory;
 import com.fintech.bankingportal.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,15 +32,18 @@ public class InvestmentService {
     private final UserRepository userRepository;
     private final AuthService authService;
     private final ActivityNotificationService notificationService;
+    private final TransactionRepository transactionRepository;
 
     public InvestmentService(InvestmentRepository investmentRepository, AccountRepository accountRepository,
                              UserRepository userRepository, AuthService authService,
-                             ActivityNotificationService notificationService) {
+                             ActivityNotificationService notificationService,
+                             TransactionRepository transactionRepository) {
         this.investmentRepository = investmentRepository;
         this.accountRepository = accountRepository;
         this.userRepository = userRepository;
         this.authService = authService;
         this.notificationService = notificationService;
+        this.transactionRepository = transactionRepository;
     }
 
     public List<InvestmentView> list(String email) {
@@ -88,6 +94,7 @@ public class InvestmentService {
         investment.setSimulationAcknowledged(true);
         investment.setTermsAcceptedAt(LocalDateTime.now());
         Investment saved = investmentRepository.save(investment);
+        recordInvestmentMovement(account, amount, "Investment opened: " + type, false);
         notificationService.notify(account.getUser(), "Investment opened",
                 type + " opened with a first contribution of ₹" + amount.toPlainString() + ".", "INVESTMENT");
         return view(saved);
@@ -115,6 +122,7 @@ public class InvestmentService {
         account.setLockedBalance(currentLocked.add(investment.getAmount()));
         investment.setPaidInstallments(investment.getPaidInstallments() + 1);
         accountRepository.save(account);
+        recordInvestmentMovement(account, investment.getAmount(), "RD installment: " + investment.getProductType(), false);
         Investment saved = investmentRepository.save(investment);
         notificationService.notify(account.getUser(), "RD installment paid",
                 "Your recurring deposit installment was recorded.", "INVESTMENT");
@@ -144,6 +152,7 @@ public class InvestmentService {
         account.setBalance(account.getBalance().add(payout.subtract(principal).max(BigDecimal.ZERO)));
         investment.setStatus("MATURED");
         accountRepository.save(account);
+        recordInvestmentMovement(account, payout, "Investment matured: " + investment.getProductType(), true);
         Investment saved = investmentRepository.save(investment);
         notificationService.notify(account.getUser(), "Investment matured",
                 "Your " + investment.getProductType() + " matured and its funds are now available in your account.", "INVESTMENT");
@@ -180,6 +189,17 @@ public class InvestmentService {
             };
         }
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Choose a supported investment term");
+    }
+
+    private void recordInvestmentMovement(Account account, BigDecimal amount, String description, boolean released) {
+        Transaction transaction = new Transaction();
+        if (released) transaction.setToAccount(account);
+        else transaction.setFromAccount(account);
+        transaction.setAmount(amount);
+        transaction.setCategory(TransactionCategory.INVESTMENT);
+        transaction.setDescription(description);
+        transaction.setStatus("SUCCESS");
+        transactionRepository.save(transaction);
     }
 
     private InvestmentView view(Investment investment) {

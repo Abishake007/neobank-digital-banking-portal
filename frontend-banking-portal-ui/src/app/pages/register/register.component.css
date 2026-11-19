@@ -10,7 +10,7 @@
 
 .bank-login-wrapper {
   align-items: flex-start;
-  padding-top: clamp(90px, 12vh, 120px);
+  padding-top: clamp(112px, 12vh, 136px);
   padding-bottom: 40px;
 }
 
@@ -30,7 +30,7 @@
 
 @media (max-width: 767.98px) {
   .bank-login-wrapper {
-    padding: 84px 14px 28px;
+    padding: 104px 14px 28px;
   }
 
   .bank-form-container {
@@ -40,4 +40,8 @@
   .form-content {
     max-width: 100%;
   }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .bank-login-wrapper { padding-top: 104px; }
 }

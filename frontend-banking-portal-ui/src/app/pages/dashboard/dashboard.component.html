@@ -1,10 +1,14 @@
 <section class="bank-hero">
-  <div class="container hero-content">
-    <h1>Be part of <br /><span>something bigger</span></h1>
-    <p>NeoBank is a digital-first banking platform designed to help you manage, grow and protect your money securely.</p>
-    <div class="hero-actions">
-      <a routerLink="/login" class="btn btn-danger">Find out more</a>
+  <div class="container hero-layout">
+    <div class="hero-content">
+      <span class="hero-eyebrow">BANKING FOR WHAT'S NEXT</span>
+      <h1>Make more<br />of your money.</h1>
+      <p>Banking that gives you the confidence to manage today and plan for tomorrow.</p>
+      <div class="hero-actions">
+        <a routerLink="/login" class="btn btn-danger">Explore NeoBank <i class="bi bi-arrow-right ms-2"></i></a>
+      </div>
     </div>
+    <div class="hero-image" role="img" aria-label="Modern bank building"></div>
   </div>
 </section>
 
@@ -44,8 +48,20 @@
           <div class="text-center mb-3">
             <h6 class="text-uppercase text-muted small fw-bold">Your Real-Time Insights</h6>
           </div>
-          <div class="chart-container" *ngIf="hasSpendingInsights; else noSpendingInsights">
-            <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType" [options]="chartOptions"></canvas>
+          <div class="row align-items-center g-2" *ngIf="hasSpendingInsights; else noSpendingInsights">
+            <div class="col-12 col-md-8">
+              <div class="chart-container">
+                <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType" [options]="chartOptions"></canvas>
+              </div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="insight-amount-list" aria-label="Spending amounts by category">
+                <div class="insight-amount-row" *ngFor="let insight of spendingInsightItems">
+                  <span class="insight-category"><span class="insight-color-dot" [style.backgroundColor]="insight.color"></span>{{ insight.category }}</span>
+                  <strong>{{ insight.amount | currency:'INR':'symbol':'1.0-2' }}</strong>
+                </div>
+              </div>
+            </div>
           </div>
           <ng-template #noSpendingInsights>
             <div class="text-center text-muted py-5" role="status">
@@ -80,11 +96,10 @@
         <h1 class="fw-bold my-2" style="font-size: 2.2rem;">₹ {{ balance }}</h1>
         <small class="opacity-75" *ngIf="accountNumber">Savings account · {{ accountNumber }}</small>
         
-        <div *ngIf="lockedBalance > 0" 
-             class="mt-auto d-flex justify-content-between align-items-center bg-white bg-opacity-10 p-2 px-3 rounded-pill"
-             style="font-size: 0.85rem;">
-          <span class="opacity-90"><i class="bi bi-lock-fill me-1"></i> Locked</span>
-          <span class="fw-bold">₹ {{ lockedBalance }}</span>
+        <div *ngIf="lockedBalance > 0 && pocketsLoaded" class="mt-auto balance-lock-breakdown">
+          <div class="d-flex justify-content-between"><span><i class="bi bi-lock-fill me-1"></i> In savings pockets</span><strong>₹ {{ pocketLockedBalance | number:'1.2-2' }}</strong></div>
+          <div class="d-flex justify-content-between"><span><i class="bi bi-lock-fill me-1"></i> In investments</span><strong>₹ {{ investmentLockedBalance | number:'1.2-2' }}</strong></div>
+          <div class="d-flex justify-content-between balance-lock-total"><span>Total locked</span><strong>₹ {{ lockedBalance | number:'1.2-2' }}</strong></div>
         </div>
       </div>
 
@@ -102,9 +117,12 @@
     </div>
 
     <div class="col-lg-8 col-md-7">
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold mb-0">Your <span class="text-primary">Pockets</span></h4>
-        <button class="btn btn-primary btn-sm rounded-pill px-3 fw-bold" style="font-size: 0.75rem;" data-bs-toggle="modal" data-bs-target="#createGoalModal">
+      <div class="pocket-heading d-flex justify-content-between align-items-start gap-3 mb-3">
+        <div>
+          <h4 class="fw-bold mb-1">Your <span class="text-primary">Pockets</span></h4>
+          <p class="pocket-guide-copy mb-0">Pockets help you save toward specific goals while keeping track of your progress. Create a pocket, choose a target, then stash money into it whenever you’re ready. Stashed money stays in your account but is locked from everyday spending, so your available balance goes down. Once the pocket reaches its target, select <strong>Claim</strong> to unlock the saved funds back into your available balance.</p>
+        </div>
+        <button class="btn btn-primary fw-bold pocket-create-button" data-bs-toggle="modal" data-bs-target="#createGoalModal">
           <i class="bi bi-plus-lg me-1"></i> NEW POCKET
         </button>
       </div>
@@ -127,11 +145,10 @@
               <small class="text-muted" style="font-size: 0.75rem;">₹{{ pocket.savedAmount }} / ₹{{ pocket.targetAmount }}</small>
               
               <button *ngIf="pocket.savedAmount < pocket.targetAmount" 
-                      class="btn btn-link btn-sm p-0 text-decoration-none fw-bold text-primary" 
-                      style="font-size: 0.8rem;"
+                      class="btn btn-sm pocket-stash-button" 
                       (click)="openStashModal(pocket)" 
                       data-bs-toggle="modal" 
-                      data-bs-target="#stashModal">Stash</button>
+                      data-bs-target="#stashModal"><i class="bi bi-plus-circle me-1"></i>Stash</button>
 
               <button *ngIf="pocket.savedAmount >= pocket.targetAmount" 
                       class="btn btn-success btn-sm fw-bold px-3 rounded-pill shadow-sm" 
@@ -143,7 +160,9 @@
 
         <div class="pocket-empty col-12 text-center py-5 border rounded-4" *ngIf="pockets.length === 0">
           <i class="bi bi-piggy-bank fs-2 text-muted opacity-25"></i>
-          <p class="text-muted mt-2 small">No active pockets yet.</p>
+          <p class="fw-semibold mt-2 mb-1">Give your savings a purpose</p>
+          <p class="text-muted mb-3">A pocket is a savings goal inside your dashboard. Give it a name—like “Trip” or “New laptop”—and set a target amount. Then choose <strong>Stash</strong> to move some available money into it. Your progress will appear here. Stashed money is locked from spending until you reach the target and claim it.</p>
+          <button class="btn btn-outline-primary btn-sm rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#createGoalModal">Create your first pocket</button>
         </div>
       </div>
       <div class="row g-3 mt-1">
@@ -180,7 +199,7 @@
           <div *ngFor="let tx of recentTransactions" class="d-flex justify-content-between align-items-center py-2 border-bottom">
             <div>
               <div class="fw-semibold">{{ transactionDirection(tx) }} <span class="text-muted fw-normal">· {{ transactionCounterparty(tx) }}</span></div>
-              <small class="text-muted">{{ tx.category || 'Transaction' }} · {{ tx.createdAt | date:'mediumDate' }}</small>
+              <small class="text-muted">{{ tx.description || tx.category || 'Transaction' }} · {{ tx.createdAt | date:'mediumDate' }}</small>
             </div>
             <div class="text-end">
               <div class="fw-bold" [class.text-success]="transactionDirection(tx) === 'Money in'" [class.text-danger]="transactionDirection(tx) === 'Money out'">
@@ -243,7 +262,7 @@
   <div class="container">
     <div class="row align-items-center g-4">
       <div class="col-md-6">
-        <img src="/vecteezy_modern-bank-building-entrance_48587382.jpeg" class="img-fluid rounded shadow" alt="Bank" />
+        <img src="/modern-banking.jpg" class="img-fluid rounded shadow" alt="Modern banking" />
       </div>
       <div class="col-md-6">
         <h3>Designed for modern banking</h3>
@@ -263,6 +282,17 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
+        <div class="pocket-help mb-3">
+          <h6 class="fw-bold mb-2"><i class="bi bi-piggy-bank me-2"></i>Save toward one goal at a time</h6>
+          <p class="mb-2">A pocket is a virtual savings goal linked to your account. For example, create one for a trip, a laptop, or an emergency fund.</p>
+          <ol class="mb-2 ps-3">
+            <li>Give your pocket a name and set the total amount you want to save.</li>
+            <li>After it’s created, choose <strong>Stash</strong> to move money from your available balance into the pocket.</li>
+            <li>Watch the progress bar as you add money. You can stash funds more than once.</li>
+            <li>When you reach the target, choose <strong>Claim</strong> to unlock the saved amount back into your available balance and close the pocket.</li>
+          </ol>
+          <p class="mb-0"><strong>Good to know:</strong> Stashed money remains part of your account balance, but it is locked from everyday spending while it’s in a pocket. Only stash money you don’t need to spend before reaching the goal.</p>
+        </div>
         <div class="mb-3">
           <label class="small fw-bold mb-1">Goal Name</label>
           <input type="text" [(ngModel)]="newGoal.name" class="form-control" placeholder="e.g. Laptop" />
@@ -286,6 +316,10 @@
       </div>
       <div class="modal-body">
         <p class="text-muted small">Target: <strong class="text-primary">{{ selectedPocket?.goalName }}</strong></p>
+        <div class="pocket-help mb-3">
+          <h6 class="fw-bold mb-1">What happens when you stash?</h6>
+          <p class="mb-0">The amount moves from your available balance into <strong>{{ selectedPocket?.goalName }}</strong> and is locked from everyday spending. It adds to the pocket’s progress. You can claim and unlock the saved amount once the target is reached.</p>
+        </div>
         <div class="mb-3">
           <label class="small fw-bold">Amount to Stash (₹)</label>
           <input type="number" [(ngModel)]="stashData.amount" class="form-control" placeholder="Enter amount" />

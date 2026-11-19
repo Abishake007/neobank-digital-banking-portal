@@ -1,9 +1,13 @@
 .send-money-page {
-  padding-top: 128px;
+  padding-top: 112px;
 }
 
 @media (max-width: 575.98px) {
   .send-money-page {
-    padding-top: 116px;
+    padding-top: 104px;
   }
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .send-money-page { padding-top: 104px; }
 }

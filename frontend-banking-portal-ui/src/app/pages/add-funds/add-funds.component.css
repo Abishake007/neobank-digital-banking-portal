@@ -1,0 +1,12 @@
+.add-funds-page {
+  padding-top: 112px;
+  padding-bottom: 40px;
+}
+
+@media (max-width: 575.98px) {
+  .add-funds-page { padding-top: 104px; }
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .add-funds-page { padding-top: 104px; }
+}

@@ -54,8 +54,7 @@ public class TransactionService {
         // ✅ PROBLEM SOLVED: Goal-Based "Pockets" Logic
         // We check if the balance minus the "Locked" amount is enough for this transfer
         // (Note: You'll need a method in Account to calculate 'getLockedBalance')
-        BigDecimal availableBalance = sender.getBalance();
-        // If you implement the Pockets feature, it would be: sender.getBalance().subtract(sender.getLockedBalance());
+        BigDecimal availableBalance = sender.getAvailableBalance();
 
         if (availableBalance.compareTo(amount) < 0) {
             throw new InsufficientBalanceException("Insufficient available balance (some funds may be locked in Goals)");
@@ -211,5 +210,13 @@ public class TransactionService {
 
         accountRepository.save(account);
         savingsGoalRepository.save(goal);
+
+        Transaction transaction = new Transaction();
+        transaction.setFromAccount(account);
+        transaction.setAmount(amount);
+        transaction.setCategory(TransactionCategory.POCKET);
+        transaction.setDescription("Stashed into pocket: " + goal.getGoalName());
+        transaction.setStatus("SUCCESS");
+        transactionRepository.save(transaction);
     }
 }

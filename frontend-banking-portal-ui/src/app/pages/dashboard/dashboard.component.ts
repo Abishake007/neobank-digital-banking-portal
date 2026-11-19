@@ -25,6 +25,8 @@ export class DashboardComponent implements OnInit {
   // --- Account Data ---
   balance = 0;
   lockedBalance = 0;
+  pocketLockedBalance = 0;
+  investmentLockedBalance = 0;
   accountNumber = '';
   monthlyIncome = 0;
   monthlySpending = 0;
@@ -36,6 +38,7 @@ export class DashboardComponent implements OnInit {
 
   // --- Virtual Pockets Data ---
   pockets: any[] = []; 
+  pocketsLoaded = false;
   selectedPocket: any = null; 
   newGoal = { name: '', target: 0 };
   stashData = { goalId: 0, amount: 0 };
@@ -50,13 +53,24 @@ export class DashboardComponent implements OnInit {
     labels: [],
     datasets: [{ 
       data: [], 
-      backgroundColor: ['#353535', '#3C6E71', '#284B63', '#D9D9D9', '#3C6E71'] 
+      backgroundColor: ['#B32025', '#343434', '#D8D8D8', '#8E171B', '#777777']
     }]
   };
 
   get hasSpendingInsights(): boolean {
     const values = this.doughnutChartData.datasets[0]?.data ?? [];
     return values.some(value => Number(value) > 0);
+  }
+
+  get spendingInsightItems(): { category: string; amount: number; color: string }[] {
+    const labels = this.doughnutChartData.labels ?? [];
+    const values = this.doughnutChartData.datasets[0]?.data ?? [];
+    const colors = ['#B32025', '#343434', '#D8D8D8', '#8E171B', '#777777'];
+    return labels.map((label, index) => ({
+      category: String(label),
+      amount: Number(values[index]) || 0,
+      color: colors[index % colors.length]
+    })).filter(item => item.amount > 0);
   }
 
   public chartOptions: any = {
@@ -95,6 +109,7 @@ export class DashboardComponent implements OnInit {
       // ✅ Update the UI variables with the new data from DB
       this.balance = acc.availableBalance; 
       this.lockedBalance = acc.lockedBalance; // Make sure this variable exists at the top of your class
+      this.updateLockedBalanceBreakdown();
       this.accountNumber = acc.accountNumber || '';
       this.calculateMonthlyTotals(this.allTransactions);
       
@@ -134,6 +149,7 @@ export class DashboardComponent implements OnInit {
     for (const tx of transactions) {
       const createdAt = new Date(tx.createdAt);
       if (tx.status !== 'SUCCESS') continue;
+      if (tx.category === 'POCKET' || tx.category === 'INVESTMENT') continue;
 
       const amount = Number(tx.amount) || 0;
       const isIncoming = tx.toAccount?.accountNumber === this.accountNumber;
@@ -148,10 +164,13 @@ export class DashboardComponent implements OnInit {
   }
 
   transactionDirection(tx: any): string {
+    if (tx.category === 'POCKET') return 'Pocket activity';
+    if (tx.category === 'INVESTMENT') return 'Investment activity';
     return tx.toAccount?.accountNumber === this.accountNumber ? 'Money in' : 'Money out';
   }
 
   transactionCounterparty(tx: any): string {
+    if (tx.description) return tx.description;
     const otherAccount = tx.fromAccount?.accountNumber === this.accountNumber
       ? tx.toAccount?.accountNumber
       : tx.fromAccount?.accountNumber;
@@ -171,7 +190,7 @@ export class DashboardComponent implements OnInit {
           labels: labels,
           datasets: [{
             data: values as number[],
-            backgroundColor: ['#353535', '#3C6E71', '#284B63', '#D9D9D9', '#3C6E71']
+            backgroundColor: ['#B32025', '#343434', '#D8D8D8', '#8E171B', '#777777']
           }]
         };
       },
@@ -191,10 +210,22 @@ export class DashboardComponent implements OnInit {
     next: (data) => {
       console.log("Pockets received from backend:", data); // ✅ Check this in your F12 Console
       this.pockets = data;
+      this.pocketsLoaded = true;
+      this.updateLockedBalanceBreakdown();
     },
-    error: (err) => console.error('Error loading pockets', err)
+    error: (err) => {
+      console.error('Error loading pockets', err);
+      this.pocketsLoaded = true;
+    }
   });
 }
+
+  private updateLockedBalanceBreakdown(): void {
+    this.pocketLockedBalance = this.pockets.reduce(
+      (total, pocket) => total + (Number(pocket.savedAmount) || 0), 0
+    );
+    this.investmentLockedBalance = Math.max(0, Number(this.lockedBalance || 0) - this.pocketLockedBalance);
+  }
 
   /**
    * Prepares the Stash Modal with the correct pocket ID

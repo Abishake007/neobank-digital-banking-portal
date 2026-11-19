@@ -49,12 +49,13 @@
       <tbody>
         <tr *ngFor="let tx of filteredTransactions">
           <td>{{ tx.createdAt | date:'short' }}</td>
-          <td>{{ tx.fromAccount?.accountNumber || 'External' }}</td>
-          <td>{{ tx.toAccount?.accountNumber || 'External' }}</td>
+          <td>{{ fromLabel(tx) }}</td>
+          <td>{{ toLabel(tx) }}</td>
           <td>
             <span class="badge rounded-pill bg-info text-dark">
               {{ tx.category || 'OTHERS' }}
             </span>
+            <small class="d-block text-muted mt-1" *ngIf="tx.description">{{ tx.description }}</small>
           </td>
           <td class="fw-bold">₹ {{ tx.amount }}</td>
           <td>
